@@ -1,4 +1,4 @@
-import { Flex, SlideFade, Button, Box } from "@chakra-ui/react";
+import { Flex, SlideFade, Box } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import Login from "../components/Login";
 import Signup from "../components/Signup";
@@ -8,7 +8,7 @@ import { useAuth } from "../context/AuthContext";
 const Authentication = () => {
   let navigate = useNavigate();
   const {
-    currentUser: { isSignedIn, isLoading },
+    currentUser: { isSignedIn },
   } = useAuth();
 
   const [isTypeLogin, setIsTypeLogin] = useState(true);
@@ -19,7 +19,7 @@ const Authentication = () => {
 
   useEffect(() => {
     if (isSignedIn) {
-      navigate("/", { replace: true });
+      navigate("/dashboard", { replace: true });
     }
   }, [isSignedIn, navigate]);
 

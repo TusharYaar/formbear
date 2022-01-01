@@ -8,15 +8,16 @@ import { useAuth } from "../context/AuthContext";
 const Signup = ({ toggleTypeLogin }) => {
   const {
     currentUser: { isLoading },
-    signIn,
+    signUp,
+    signInWithGoogle,
   } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(true);
 
-  const handleLogin = async () => {
+  const handleSignUp = async () => {
     try {
-      await signIn(email, password, rememberMe);
+      await signUp(email, password);
     } catch (err) {
       console.log(err);
     }
@@ -61,10 +62,10 @@ const Signup = ({ toggleTypeLogin }) => {
               Remember me
             </Checkbox>
           </Stack>
-          <Button variant="solid" onClick={handleLogin}>
-            Login
+          <Button variant="solid" onClick={handleSignUp} isDisabled={isLoading}>
+            Signup
           </Button>
-          <Button w="100%" my={5} leftIcon={<FcGoogle />}>
+          <Button w="100%" my={5} leftIcon={<FcGoogle />} onClick={signInWithGoogle} isDisabled={isLoading}>
             Continue with Google
           </Button>
         </VStack>

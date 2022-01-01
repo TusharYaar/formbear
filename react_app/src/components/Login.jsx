@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Box,
   FormControl,
@@ -23,6 +23,7 @@ const Login = ({ toggleTypeLogin }) => {
   const {
     currentUser: { isLoading },
     signIn,
+    signInWithGoogle,
   } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,7 +33,7 @@ const Login = ({ toggleTypeLogin }) => {
     try {
       await signIn(email, password, rememberMe);
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
     }
   };
 
@@ -79,10 +80,10 @@ const Login = ({ toggleTypeLogin }) => {
               Forgot password?
             </Link>
           </Stack>
-          <Button variant="solid" onClick={handleLogin}>
+          <Button variant="solid" onClick={handleLogin} isDisabled={isLoading}>
             Login
           </Button>
-          <Button w="100%" my={5} leftIcon={<FcGoogle />}>
+          <Button w="100%" my={5} leftIcon={<FcGoogle />} onClick={signInWithGoogle} isDisabled={isLoading}>
             Continue with Google
           </Button>
         </VStack>

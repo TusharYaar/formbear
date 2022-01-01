@@ -3,14 +3,12 @@ import axios from "axios";
 const BASE_URL = "http://localhost:5000/api";
 
 export const getUserProfile = async (IdToken) => {
-  console.log("called getUserProfile");
   const response = await axios.get(`${BASE_URL}/profile`, {
     headers: {
       Authorization: `Bearer ${IdToken}`,
     },
   });
-
-  return await response.data;
+  return response.data;
 };
 
 export const getUserForms = async (IdToken) => {
@@ -20,5 +18,5 @@ export const getUserForms = async (IdToken) => {
     },
   });
 
-  return await response.data;
+  return response.data;
 };
