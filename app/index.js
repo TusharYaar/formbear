@@ -6,11 +6,19 @@ const path = require("path");
 const app = express();
 var cors = require("cors");
 
+// Enable CORS
 app.use(cors());
 
+// Set Static Path
 app.use(express.static(path.join(__dirname, "build")));
 
+// Import Routes
+if (!process.env.DETA_RUNTIME) {
+  app.use("/api", require("./routes/devRoutes"));
+}
+
 app.use("/api", require("./routes/userRoutes"));
+app.use("/api/admin", require("./routes/adminRoutes"));
 
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
