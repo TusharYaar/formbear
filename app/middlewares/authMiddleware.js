@@ -1,5 +1,5 @@
 const { auth } = require("../firebase");
-const { userDb } = require("../database");
+const { userDb, tokenDb } = require("../database");
 
 const verifyUser = async (req, res, next) => {
   /**
@@ -104,4 +104,38 @@ const checkAdmin = (req, res, next) => {
   }
 };
 
-module.exports = { verifyUser, checkAdmin };
+const verifyUserIdToken = async (req, res, next) => {
+  /**
+   *
+   */
+  try {
+    const { authorization } = req.headers;
+    if (!authorization) {
+      return res.status(401).send({
+        message: "Token is missing",
+      });
+    }
+    const token = authorization.split(" ")[1];
+    const user = await tokenDb.get(token);
+    if (!user) {
+      return res.status(401).send({
+        message: "Token does not exist or has expired",
+      });
+    }
+
+    if (new Date() > Date(user.expiry_date)) {
+      return res.status(401).send({
+        message: "Token has expired",
+      });
+    }
+
+    next();
+  } catch (error) {
+    console.log(error);
+    return res.status(401).send({
+      message: "You must be logged in to access this content",
+    });
+  }
+};
+
+module.exports = { verifyUser, checkAdmin, verifyUserIdToken };

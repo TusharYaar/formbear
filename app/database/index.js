@@ -11,8 +11,10 @@ if (process.env.DETA_RUNTIME) {
 
 const userDb = deta.Base("users");
 const formDb = deta.Base("forms");
+const tokenDb = deta.Base("tokens");
 
 module.exports = {
   userDb,
   formDb,
+  tokenDb,
 };

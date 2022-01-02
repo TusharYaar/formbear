@@ -17,4 +17,21 @@ const checkDevEnv = (req, res, next) => {
     });
   }
 };
-module.exports = { checkDevEnv };
+
+const addUserData = (req, res, next) => {
+  req.user = {
+    uid: "sdvef34f3rv34f34f",
+    email: "tushar@test.com",
+    sign_in_provider: "password",
+    email_verified: true,
+    is_disabled: false,
+    mobile_devices: [],
+    user_type: "user",
+    created_at: new Date().toISOString(),
+    last_updated_at: new Date().toISOString(),
+    last_login_at: new Date().toISOString(),
+  };
+  next();
+};
+
+module.exports = { addUserData, checkDevEnv };

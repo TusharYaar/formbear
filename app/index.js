@@ -3,6 +3,9 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const app = express();
+var bodyParser = require("body-parser");
+
+app.use(bodyParser.json());
 
 // Set Static Path
 app.use(express.static(path.join(__dirname, "build")));
@@ -14,7 +17,7 @@ if (!process.env.DETA_RUNTIME) {
 
 app.use("/api", require("./routes/userRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
-app.use("/forms", require("./routes/formRoutes"));
+app.use("/forms", require("./routes/openRoutes"));
 
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
