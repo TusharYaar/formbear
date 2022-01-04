@@ -13,7 +13,7 @@ const checkDevEnv = (req, res, next) => {
     next();
   } else {
     res.status(403).send({
-      message: "Unauthorized",
+      error: "Unauthorized",
     });
   }
 };

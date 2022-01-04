@@ -28,13 +28,14 @@ router.get("/generate-jwt", checkDevEnv, addUserData, async (req, res) => {
 router.post("/create-token", checkDevEnv, addUserData, async (req, res) => {
   try {
     const { uid, email } = req.user;
-    const { expiry_duration } = req.body;
+    const { expiry_duration = "7d", allow_delete = false } = req.body;
     const token = generateToken();
     const application = await tokenDb.put({
       uid,
       email,
       token,
       expiry_duration,
+      allow_delete,
     });
     res.send({ application });
   } catch (err) {

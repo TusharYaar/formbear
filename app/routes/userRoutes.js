@@ -4,30 +4,34 @@ const cors = require("cors");
 const { appCorsOptions } = require("../utils/cors");
 
 const { verifyUser } = require("../middlewares/authMiddleware");
-const { getForms } = require("../utils/form");
+const { getAllForms } = require("../utils/form");
 const { generateToken } = require("../utils/token");
 
-const { userDb, tokenDb } = require("../database");
+const { tokenDb } = require("../database");
 
 // Enable CORS
 router.use(cors(appCorsOptions));
 
-router.get("/profile", verifyUser, async (req, res) => {
+router.use(verifyUser);
+
+router.get("/profile", async (req, res) => {
   const { uid, is_disabled, email_verified, email, mobile_devices } = req.user;
-  const forms = await getForms(email);
+  const forms = await getAllForms(email);
   res.send({ uid, is_disabled, email_verified, email, mobile_devices, forms });
 });
 
-router.post("/create-token", verifyUser, async (req, res) => {
+router.post("/create-token", async (req, res) => {
   try {
     const { uid, email } = req.user;
-    const { expiry_duration } = req.body;
+    const { expiry_duration = "7d", allow_delete = false } = req.body;
     const token = generateToken();
     const application = await tokenDb.put({
       uid,
       email,
       token,
       expiry_duration,
+      allow_delete,
+      star: false,
     });
     res.send({ application });
   } catch (err) {
@@ -36,9 +40,9 @@ router.post("/create-token", verifyUser, async (req, res) => {
   }
 });
 
-router.get("/user-forms", verifyUser, async (req, res) => {
+router.get("/user-forms", async (req, res) => {
   const { email } = req.user;
-  const forms = await getForms(email);
+  const forms = await getAllForms(email);
   res.send(forms);
 });
 

@@ -21,7 +21,7 @@ const verifyUser = async (req, res, next) => {
     // verify the token
     if (!authorization) {
       return res.status(401).send({
-        message: "You must be logged in to access this content",
+        error: "You must be logged in to access this content",
       });
     }
 
@@ -67,7 +67,7 @@ const verifyUser = async (req, res, next) => {
     // check is user is disabled
     if (user.is_disabled) {
       return res.status(403).send({
-        message: "Your account has been disabled",
+        error: "Your account has been disabled",
       });
     }
 
@@ -79,7 +79,7 @@ const verifyUser = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     return res.status(401).send({
-      message: "You must be logged in to access this content",
+      error: "You must be logged in to access this content",
     });
   }
 };
@@ -99,12 +99,12 @@ const checkAdmin = (req, res, next) => {
     next();
   } else {
     res.status(403).send({
-      message: "You are not authorized to access this content",
+      error: "You are not authorized to access this content",
     });
   }
 };
 
-const verifyUserIdToken = async (req, res, next) => {
+const verifyUserApiToken = async (req, res, next) => {
   /**
    *
    */
@@ -112,30 +112,29 @@ const verifyUserIdToken = async (req, res, next) => {
     const { authorization } = req.headers;
     if (!authorization) {
       return res.status(401).send({
-        message: "Token is missing",
+        error: "Token is missing",
       });
     }
     const token = authorization.split(" ")[1];
     const user = await tokenDb.get(token);
     if (!user) {
       return res.status(401).send({
-        message: "Token does not exist or has expired",
+        error: "Token does not exist or has expired",
       });
     }
 
     if (new Date() > Date(user.expiry_date)) {
       return res.status(401).send({
-        message: "Token has expired",
+        error: "Token has expired",
       });
     }
-
     next();
   } catch (error) {
     console.log(error);
     return res.status(401).send({
-      message: "You must be logged in to access this content",
+      error: "You must be logged in to access this content",
     });
   }
 };
 
-module.exports = { verifyUser, checkAdmin, verifyUserIdToken };
+module.exports = { verifyUser, checkAdmin, verifyUserApiToken };
