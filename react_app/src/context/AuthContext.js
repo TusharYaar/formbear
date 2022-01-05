@@ -9,10 +9,7 @@ import {
 
 import { auth, googleProvider } from "../firebase/config";
 
-import {
-  getUserProfile,
-  //  getUserForms
-} from "../Utils/apiFunction";
+import { getUserProfile, getUserForms } from "../Utils/apiFunction";
 
 const DEFUALT_USER_STATE = {
   isSignedIn: false,
@@ -31,16 +28,21 @@ export function AuthProvider({ children }) {
 
   const handleAuthChange = useCallback(async (user) => {
     if (user) {
-      const { emailVerified, uid, displayName, photoURL } = user;
+      const { emailVerified, uid, displayName, photoURL, email } = user;
       setUser({
         isSignedIn: true,
-        user: { emailVerified, uid, displayName, photoURL },
+        user: { email, emailVerified, uid, displayName, photoURL },
         isLoading: false,
       });
+      console.log("Fetching user profile");
       const IdToken = await user.getIdToken(true);
-      const dataResponse = await getUserProfile(IdToken);
-      console.log(dataResponse);
-      // const formsResponse = await getUserForms(IdToken);
+      const response = await getUserProfile(IdToken);
+      setUser({
+        isSignedIn: true,
+        user: { email, emailVerified, uid, displayName, photoURL, ...response },
+        isLoading: false,
+      });
+
       console.log("User Logged in");
     } else {
       setUser({ ...DEFUALT_USER_STATE, isLoading: false });
@@ -50,7 +52,6 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, handleAuthChange);
-
     return unsubscribe;
   }, [handleAuthChange]);
 
@@ -85,12 +86,27 @@ export function AuthProvider({ children }) {
     return signInWithRedirect(auth, googleProvider);
   };
 
+  const getForms = async () => {
+    try {
+      const IdToken = await auth.currentUser.getIdToken(true);
+      const response = await getUserForms(IdToken);
+      setUser({
+        ...currentUser,
+        user: { ...currentUser.user, forms: response },
+      });
+    } catch (error) {
+      console.log(error.message);
+      throw error;
+    }
+  };
+
   const value = {
     currentUser,
     logOut,
     signIn,
     signUp,
     signInWithGoogle,
+    getForms,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
