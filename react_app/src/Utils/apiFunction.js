@@ -12,7 +12,7 @@ export const getUserProfile = async (IdToken) => {
 };
 
 export const getUserForms = async (IdToken) => {
-  const response = await axios.get(`${BASE_URL}/forms`, {
+  const response = await axios.get(`${BASE_URL}/user-forms`, {
     headers: {
       Authorization: `Bearer ${IdToken}`,
     },

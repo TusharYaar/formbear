@@ -31,12 +31,13 @@ export function AuthProvider({ children }) {
       const { emailVerified, uid, displayName, photoURL, email } = user;
       setUser({
         isSignedIn: true,
-        user: { email, emailVerified, uid, displayName, photoURL },
+        user: { email, emailVerified, uid, displayName, photoURL, forms: [] },
         isLoading: false,
       });
       console.log("Fetching user profile");
       const IdToken = await user.getIdToken(true);
       const response = await getUserProfile(IdToken);
+      console.log(response);
       setUser({
         isSignedIn: true,
         user: { email, emailVerified, uid, displayName, photoURL, ...response },
@@ -94,6 +95,7 @@ export function AuthProvider({ children }) {
         ...currentUser,
         user: { ...currentUser.user, forms: response },
       });
+      console.log(response);
     } catch (error) {
       console.log(error.message);
       throw error;

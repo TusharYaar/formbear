@@ -1,4 +1,4 @@
-import { Box, Collapse } from "@chakra-ui/react";
+import { Flex, Collapse } from "@chakra-ui/react";
 import Navbar from "./components/Navbar";
 
 import { Routes, Route, useLocation } from "react-router-dom";
@@ -15,7 +15,7 @@ function App() {
   let { pathname } = useLocation();
 
   return (
-    <Box>
+    <Flex minH="100vh" direction="column">
       <Collapse in={!ROUTES.includes(pathname)}>
         <Navbar />
       </Collapse>
@@ -23,10 +23,10 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Authentication />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} exact />
         <Route path="/docs" element={<Docs />} />
       </Routes>
-    </Box>
+    </Flex>
   );
 }
 

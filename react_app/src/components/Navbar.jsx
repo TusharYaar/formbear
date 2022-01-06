@@ -15,7 +15,7 @@ const Navbar = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box minW="100vw" bg="blue.300" px={{ sm: 2, md: 4 }}>
+    <Box bg="blue.300" px={{ sm: 2, md: 4 }}>
       <Flex direction="row" align="center" justify="space-between" h={{ sm: 40, md: "60px" }}>
         <Box>
           <Link as={RouterLink} to="/" color="white" fontSize="lg">
