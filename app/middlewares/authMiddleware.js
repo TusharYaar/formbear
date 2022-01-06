@@ -1,6 +1,8 @@
 const { auth } = require("../firebase");
 const { userDb, tokenDb } = require("../database");
 
+const { generateToken } = require("../utils/token");
+
 const verifyUser = async (req, res, next) => {
   /**
    * Verify the user token
@@ -32,7 +34,6 @@ const verifyUser = async (req, res, next) => {
       uid,
       firebase: { sign_in_provider },
     } = await auth.verifyIdToken(token);
-
     // get the user from the database
     let user = await userDb.get(uid);
     // if the user does not exist, create it
@@ -42,6 +43,7 @@ const verifyUser = async (req, res, next) => {
           uid,
           email,
           sign_in_provider,
+          submit_id: generateToken(12),
           email_verified,
           is_disabled: false,
           mobile_devices: [],
@@ -55,13 +57,13 @@ const verifyUser = async (req, res, next) => {
     } else {
       // update the last login time
       const new_login_at = new Date().toISOString();
-      await userDb.update(
+      userDb.update(
         {
           last_login_at: new_login_at,
         },
         uid
       );
-      user.last_login_at = new_login_at;
+      // user.last_login_at = new_login_at;
     }
 
     // check is user is disabled

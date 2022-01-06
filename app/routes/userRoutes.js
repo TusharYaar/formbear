@@ -31,7 +31,6 @@ router.post("/create-token", async (req, res) => {
       token,
       expiry_duration,
       allow_delete,
-      star: false,
     });
     res.send({ application });
   } catch (err) {
@@ -41,9 +40,14 @@ router.post("/create-token", async (req, res) => {
 });
 
 router.get("/user-forms", async (req, res) => {
-  const { email } = req.user;
-  const forms = await getAllForms(email);
-  res.send(forms);
+  try {
+    const { email } = req.user;
+    const forms = await getAllForms(email);
+    res.send(forms);
+  } catch (err) {
+    console.log(err);
+    res.send({ error: err });
+  }
 });
 
 module.exports = router;

@@ -14,12 +14,13 @@ router.use(cors());
 
 router.all("/submit/:id", getUserProfile, async function (req, res) {
   try {
-    console.log(req.user);
     const { body } = req;
     await formDb.put({
       form_response: body,
       uid: req.user.uid,
       email: req.user.email,
+      star: false,
+      created_at: new Date().toISOString(),
     });
     res.send({ success: true });
   } catch (error) {
@@ -34,7 +35,7 @@ router.get("/", verifyUserApiToken, async (req, res) => {
     res.send(forms);
   } catch (err) {
     console.log(err);
-    res.send({ error: err });
+    res.status(500).send({ error: err });
   }
 });
 
@@ -46,7 +47,7 @@ router.get("/:id", verifyUserApiToken, async (req, res) => {
     res.send(form);
   } catch (err) {
     console.log(err);
-    res.send({ error: err });
+    res.status(500).send({ error: err });
   }
 });
 
@@ -61,7 +62,7 @@ router.delete("/:id", verifyUserApiToken, async (req, res) => {
     res.send(form);
   } catch (err) {
     console.log(err);
-    res.send({ error: err });
+    res.status(500).send({ error: err });
   }
 });
 
