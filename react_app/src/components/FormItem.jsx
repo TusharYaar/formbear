@@ -4,10 +4,37 @@ import { parseISO, format } from "date-fns";
 
 import { AiTwotoneStar, AiOutlineStar, AiFillDelete } from "react-icons/ai";
 
-const FormItem = ({ isOpen, data, handleFormDetailView, compLoading }) => {
+import { useAuth } from "../context/AuthContext";
+
+const FormItem = ({ isOpen, data, handleFormDetailView, compLoading, setCompLoading }) => {
+  const { toggleStar, deleteForm } = useAuth();
+
   const handleClick = () => {
     handleFormDetailView(data.key);
   };
+
+  const handleStar = async (event) => {
+    try {
+      event.stopPropagation();
+      setCompLoading(true);
+      await toggleStar(data.key);
+    } catch (error) {
+      console.log(error);
+    }
+    setCompLoading(false);
+  };
+
+  const handleDelete = async (event) => {
+    try {
+      event.stopPropagation();
+      setCompLoading(true);
+      await deleteForm(data.key);
+    } catch (error) {
+      console.log(error);
+    }
+    setCompLoading(false);
+  };
+
   return (
     <Flex
       onClick={handleClick}
@@ -24,6 +51,7 @@ const FormItem = ({ isOpen, data, handleFormDetailView, compLoading }) => {
       <Flex>
         <IconButton
           aria-label="Search database"
+          onClick={handleStar}
           icon={data.star ? <AiTwotoneStar /> : <AiOutlineStar />}
           isLoading={compLoading}
         />
@@ -34,8 +62,12 @@ const FormItem = ({ isOpen, data, handleFormDetailView, compLoading }) => {
           </Text>
         </VStack>
       </Flex>
-      <IconButton aria-label="Delete form" icon={<AiFillDelete color="red" />} isLoading={compLoading} />
-      {/* <AiFillDelete /> */}
+      <IconButton
+        aria-label="Delete form"
+        icon={<AiFillDelete color="red" />}
+        onClick={handleDelete}
+        isLoading={compLoading}
+      />
     </Flex>
   );
 };

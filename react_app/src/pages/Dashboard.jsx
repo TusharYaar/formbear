@@ -77,6 +77,7 @@ const Dashboard = () => {
               openForm={openForm}
               handleFormDetailView={handleFormDetailView}
               compLoading={compLoading}
+              setCompLoading={setCompLoading}
             />
           )}
           <AnimatePresence>

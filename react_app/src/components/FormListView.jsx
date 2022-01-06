@@ -1,7 +1,7 @@
 import { VStack } from "@chakra-ui/react";
 import FormItem from "../components/FormItem";
 
-const FormListView = ({ forms, handleFormDetailView, openForm, compLoading }) => {
+const FormListView = ({ forms, handleFormDetailView, openForm, compLoading, setCompLoading }) => {
   return (
     <VStack width="100%" p={4}>
       {forms.map((form) => (
@@ -11,6 +11,7 @@ const FormListView = ({ forms, handleFormDetailView, openForm, compLoading }) =>
           handleFormDetailView={handleFormDetailView}
           isOpen={form.key === openForm}
           compLoading={compLoading}
+          setCompLoading={setCompLoading}
         />
       ))}
     </VStack>
