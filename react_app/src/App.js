@@ -15,7 +15,7 @@ function App() {
   let { pathname } = useLocation();
 
   return (
-    <Flex minH="100vh" direction="column">
+    <Flex h="100vh" direction="column">
       <Collapse in={!ROUTES.includes(pathname)}>
         <Navbar />
       </Collapse>

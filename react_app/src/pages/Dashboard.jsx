@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
-import { Box, Text, Flex, HStack, IconButton, VStack } from "@chakra-ui/react";
+import { Box, Text, Flex, HStack, IconButton, VStack, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 
 import { AnimatePresence } from "framer-motion";
 
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
-import { RiRefreshLine } from "react-icons/ri";
+import { RiRefreshLine, RiSearch2Line } from "react-icons/ri";
 
 import FormDetailView from "../components/FormDetailView";
 import FormListView from "../components/FormListView";
@@ -21,6 +21,7 @@ const Dashboard = () => {
 
   const [openForm, setOpenForm] = useState();
   const [filter, setFilter] = useState();
+  const [search, setSearch] = useState("");
   const [compLoading, setCompLoading] = useState(true);
 
   const handleFormDetailView = (form) => {
@@ -34,9 +35,10 @@ const Dashboard = () => {
     } catch (error) {
       console.log(error);
     }
-
     setCompLoading(false);
   };
+
+  const handleSearchChange = (event) => setSearch(event.target.value);
 
   useEffect(() => {
     if (!isSignedIn && !isLoading) {
@@ -56,13 +58,24 @@ const Dashboard = () => {
   }
 
   return (
-    <Flex h="100%" grow={1}>
+    <Flex h="100%" grow={1} overflowX="hidden">
       <VStack w={[320, 400, 300]} grow={1}></VStack>
       <Box w="100%">
         <HStack justify="space-between" p={4}>
-          <Box>
+          <Flex direction={["column", "row"]} align="center" grow={1}>
             <Text fontSize="4xl">Dashboard</Text>
-          </Box>
+            <InputGroup>
+              <InputLeftElement mx={3} pointerEvents="none" children={<RiSearch2Line color="gray.300" />} />
+              <Input
+                value={search}
+                onChange={handleSearchChange}
+                variant="filled"
+                placeholder="Search"
+                width="100%"
+                mx={3}
+              />
+            </InputGroup>
+          </Flex>
           <IconButton
             isLoading={compLoading}
             aria-label="Refresh forms"
@@ -85,6 +98,8 @@ const Dashboard = () => {
               <FormDetailView
                 form={user.forms.items.find((form) => form.key === openForm)}
                 handleFormDetailView={handleFormDetailView}
+                compLoading={compLoading}
+                setCompLoading={setCompLoading}
               />
             )}
           </AnimatePresence>

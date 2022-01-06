@@ -1,20 +1,62 @@
-import { Box, Text, IconButton } from "@chakra-ui/react";
-
-import { motion } from "framer-motion";
-
+import { Box, Text, IconButton, forwardRef, HStack } from "@chakra-ui/react";
+import { motion, isValidMotionProp } from "framer-motion";
 import { RiCloseCircleLine } from "react-icons/ri";
+import { AiTwotoneStar, AiOutlineStar, AiFillDelete } from "react-icons/ai";
 
-const FormDetailView = ({ form, handleFormDetailView, maxWidth = 900 }) => {
+import DataTable from "./DataTable";
+import { useAuth } from "../context/AuthContext";
+
+// 1. Create a custom motion component from Box
+const MotionBox = motion(Box);
+const FormDetailView = ({ form, handleFormDetailView, maxWidth = 900, compLoading, setCompLoading }) => {
   const closeView = () => {
     handleFormDetailView(null);
   };
+  const { toggleStar, deleteForm } = useAuth();
+  const handleStar = async (event) => {
+    try {
+      event.stopPropagation();
+      setCompLoading(true);
+      await toggleStar(form.key);
+    } catch (error) {
+      console.log(error);
+    }
+    setCompLoading(false);
+  };
+
+  const handleDelete = async (event) => {
+    try {
+      event.stopPropagation();
+      setCompLoading(true);
+      await deleteForm(form.key);
+    } catch (error) {
+      console.log(error);
+    }
+    setCompLoading(false);
+  };
   return (
-    <motion.div initial={{ width: 0 }} animate={{ width: maxWidth }} exit={{ width: 0 }}>
-      <IconButton colorScheme="blue" aria-label="Search database" icon={<RiCloseCircleLine />} onClick={closeView} />
+    <MotionBox initial={{ width: 0 }} animate={{ width: maxWidth }} exit={{ width: 0 }} p={4}>
+      <HStack justify="space-between">
+        <IconButton colorScheme="blue" aria-label="Search database" icon={<RiCloseCircleLine />} onClick={closeView} />
+        <HStack>
+          <IconButton
+            aria-label={`${form.star ? "Unstar" : "Star"} form`}
+            onClick={handleStar}
+            icon={form.star ? <AiTwotoneStar /> : <AiOutlineStar />}
+            isLoading={compLoading}
+          />
+          <IconButton
+            aria-label="Delete form"
+            icon={<AiFillDelete color="red" />}
+            onClick={handleDelete}
+            isLoading={compLoading}
+          />
+        </HStack>
+      </HStack>
       <Box p={4}>
-        <code>{JSON.stringify(form.form_response)}</code>
+        <DataTable data={form.form_response} nestLvl={0} />
       </Box>
-    </motion.div>
+    </MotionBox>
   );
 };
 
