@@ -4,10 +4,10 @@ const cors = require("cors");
 const { appCorsOptions } = require("../utils/cors");
 
 const { verifyUser } = require("../middlewares/authMiddleware");
-const { getAllForms } = require("../utils/form");
+const { getAllForms, getForm } = require("../utils/form");
 const { generateToken } = require("../utils/token");
 
-const { tokenDb } = require("../database");
+const { tokenDb, formDb } = require("../database");
 
 // Enable CORS
 router.use(cors(appCorsOptions));
@@ -44,6 +44,40 @@ router.get("/user-forms", async (req, res) => {
     const { email } = req.user;
     const forms = await getAllForms(email);
     res.send(forms);
+  } catch (err) {
+    console.log(err);
+    res.send({ error: err });
+  }
+});
+
+router.delete("/user-forms/:id", async (req, res) => {
+  try {
+    const { email } = req.user;
+    const { id } = req.params;
+    const form = await getForm(email, id);
+    if (form) {
+      await formDb.delete(id);
+      res.send({ success: true });
+    } else {
+      res.send({ error: "Form not found" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.send({ error: err });
+  }
+});
+
+router.get("/user-forms/:id/star", async (req, res) => {
+  try {
+    const { email } = req.user;
+    const { id } = req.params;
+    const form = await getForm(email, id);
+    if (form) {
+      await formDb.update({ star: !form.star }, id);
+      res.send({ success: true });
+    } else {
+      res.send({ error: "Form not found" });
+    }
   } catch (err) {
     console.log(err);
     res.send({ error: err });
