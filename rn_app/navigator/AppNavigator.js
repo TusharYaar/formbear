@@ -17,12 +17,11 @@ const AppNavigator = () => {
   const {
     currentUser: {isLoading, isSignedIn, user},
   } = useAuth();
-  console.log(isSignedIn, isLoading);
   if (isLoading) return <LoadingScreen />;
 
-  if (isSignedIn && !isLoading && !user?.emailVerified) {
-    return <VerifyScreen />;
-  }
+  // if (isSignedIn && !isLoading && !user?.emailVerified) {
+  //   return <VerifyScreen />;
+  // }
 
   return (
     <Stack.Navigator>

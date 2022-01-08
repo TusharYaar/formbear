@@ -1,6 +1,11 @@
 import axios from 'axios';
+import {
+  getUniqueId,
+  getManufacturer,
+  getDeviceName,
+} from 'react-native-device-info';
 
-const BASE_URL = 'https://e91c-49-36-37-192.ngrok.io';
+const BASE_URL = 'https://cc04-49-36-37-192.ngrok.io/api';
 
 export const getUserProfile = async IdToken => {
   const response = await axios.get(`${BASE_URL}/profile`, {
@@ -9,6 +14,30 @@ export const getUserProfile = async IdToken => {
     },
   });
   return response.data;
+};
+
+export const addMobileDevice = async (IdToken, messageToken) => {
+  try {
+    const deviceInfo = {
+      device_id: getUniqueId(),
+      manufacturer: await getManufacturer(),
+      message_token: messageToken,
+      device_name: await getDeviceName(),
+    };
+
+    await axios.post(
+      `${BASE_URL}/mobile`,
+      {...deviceInfo},
+      {
+        headers: {
+          Authorization: `Bearer ${IdToken}`,
+        },
+      },
+    );
+    return deviceInfo;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getUserForms = async IdToken => {

@@ -1,16 +1,17 @@
 import React, {useContext, useState, useEffect, useCallback} from 'react';
-// import {
-//   onAuthStateChanged,
-//   signInWithEmailAndPassword,
-//   signInWithRedirect,
-//   createUserWithEmailAndPassword,
-//   signOut,
-// } from 'firebase/auth';
 
 import firebaseAuth from '@react-native-firebase/auth';
+import firebaseMessaging from '@react-native-firebase/messaging';
+
+import {MMKV} from 'react-native-mmkv';
+
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+
+import service from '../android/app/google-services.json';
 
 import {
   getUserProfile,
+  addMobileDevice,
   getUserForms,
   deleteUserForm,
   toggleUserFormStar,
@@ -24,41 +25,56 @@ const DEFUALT_USER_STATE = {
 
 const AuthContext = React.createContext();
 
+const storage = new MMKV();
+
+GoogleSignin.configure({
+  webClientId: service.client[0].oauth_client[1].client_id,
+});
+
 export const useAuth = () => {
   return useContext(AuthContext);
 };
 
 export function AuthProvider({children}) {
   const auth = firebaseAuth();
+  const messaging = firebaseMessaging();
   const [currentUser, setCurrentUser] = useState(DEFUALT_USER_STATE);
+
+  useEffect(() => {
+    if (!storage.getString('app_settings.app_bootstrapped')) {
+      messaging.registerDeviceForRemoteMessages();
+      storage.set('app_settings.app_bootstrapped', 'true');
+    } else {
+      console.log('App already bootstrapped');
+    }
+  }, []);
 
   const handleAuthChange = useCallback(async user => {
     try {
       if (user) {
-        // console.log(user);
         const {emailVerified, uid, displayName, photoURL, email} = user;
+        const IdToken = await user.getIdToken(true);
+        const response = await getUserProfile(IdToken);
+        const messageToken = await messaging.getToken();
+        const device = response.mobile_devices.find(
+          device => device.message_token === messageToken,
+        );
+
+        if (!device) {
+          const device = await addMobileDevice(IdToken, messageToken);
+          response.mobile_devices.push(device);
+        }
         setCurrentUser({
           isSignedIn: true,
-          user: {email, emailVerified, uid, displayName, photoURL, forms: []},
+          user: {email, emailVerified, uid, displayName, photoURL, ...response},
           isLoading: false,
         });
-        // console.log('Fetching user profile');
-        // const IdToken = await user.getIdToken(true);
-        // const response = await getUserProfile(IdToken);
-        // console.log(response);
-        // setCurrentUser({
-        //   isSignedIn: true,
-        //   user: {email, emailVerified, uid, displayName, photoURL, ...response},
-        //   isLoading: false,
-        // });
-
-        console.log('User Logged in');
       } else {
         setCurrentUser({...DEFUALT_USER_STATE, isLoading: false});
         console.log('No User or User Logged Out');
       }
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
       setCurrentUser({...DEFUALT_USER_STATE, isLoading: false});
     }
   }, []);
@@ -70,7 +86,6 @@ export function AuthProvider({children}) {
 
   const signIn = async (email, password) => {
     try {
-      setCurrentUser({...DEFUALT_USER_STATE});
       await auth.signInWithEmailAndPassword(email, password);
     } catch (error) {
       setCurrentUser({...DEFUALT_USER_STATE, isLoading: false});
@@ -90,14 +105,17 @@ export function AuthProvider({children}) {
   //   }
   // };
 
-  // const logOut = () => {
-  //   signOut(auth);
-  // };
+  const logOut = () => {
+    auth.signOut();
+  };
 
-  // const signInWithGoogle = () => {
-  //   setCurrentUser({...DEFUALT_USER_STATE});
-  //   return signInWithRedirect(auth, googleProvider);
-  // };
+  const signInWithGoogle = async () => {
+    const {idToken} = await GoogleSignin.signIn();
+    const googleCredential =
+      firebaseAuth.GoogleAuthProvider.credential(idToken);
+    // return
+    auth.signInWithCredential(googleCredential);
+  };
 
   // const getForms = async () => {
   //   try {
@@ -166,10 +184,10 @@ export function AuthProvider({children}) {
 
   const value = {
     currentUser,
-    // logOut,
+    logOut,
     signIn,
     // signUp,
-    // signInWithGoogle,
+    signInWithGoogle,
     // getForms,
     // toggleStar,
     // deleteForm,
