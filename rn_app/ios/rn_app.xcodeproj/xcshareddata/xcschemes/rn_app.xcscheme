@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "Formbear.app"
-               BlueprintName = "Formbear"
-               ReferencedContainer = "container:Formbear.xcodeproj">
+               BuildableName = "rn_app.app"
+               BlueprintName = "rn_app"
+               ReferencedContainer = "container:rn_app.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "FormbearTests.xctest"
-               BlueprintName = "FormbearTests"
-               ReferencedContainer = "container:Formbear.xcodeproj">
+               BuildableName = "rn_appTests.xctest"
+               BlueprintName = "rn_appTests"
+               ReferencedContainer = "container:rn_app.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Formbear.app"
-            BlueprintName = "Formbear"
-            ReferencedContainer = "container:Formbear.xcodeproj">
+            BuildableName = "rn_app.app"
+            BlueprintName = "rn_app"
+            ReferencedContainer = "container:rn_app.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Formbear.app"
-            BlueprintName = "Formbear"
-            ReferencedContainer = "container:Formbear.xcodeproj">
+            BuildableName = "rn_app.app"
+            BlueprintName = "rn_app"
+            ReferencedContainer = "container:rn_app.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

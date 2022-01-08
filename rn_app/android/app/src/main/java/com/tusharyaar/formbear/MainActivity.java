@@ -1,4 +1,4 @@
-package com.formbear;
+package com.tusharyaar.formbear;
 
 import com.facebook.react.ReactActivity;
 
@@ -10,6 +10,6 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "Formbear";
+    return "rn_app";
   }
 }
