@@ -7,7 +7,7 @@ const { verifyUser } = require("../middlewares/authMiddleware");
 const { getAllForms, getForm } = require("../utils/form");
 const { generateToken } = require("../utils/token");
 
-const { tokenDb, formDb } = require("../database");
+const { tokenDb, formDb, userDb } = require("../database");
 
 // Enable CORS
 router.use(cors(appCorsOptions));
@@ -18,6 +18,33 @@ router.get("/profile", async (req, res) => {
   const { uid, is_disabled, email_verified, email, mobile_devices } = req.user;
   const forms = await getAllForms(email);
   res.send({ uid, is_disabled, email_verified, email, mobile_devices, forms });
+});
+
+router.post("/mobile", async (req, res) => {
+  const { uid, mobile_devices } = req.user;
+  const { device_name = "", device_id = "", manufacturer = "", message_token = "" } = req.body;
+  if (!device_name || !device_id || !manufacturer || !message_token) {
+    return res.status(400).send({ error: "Incomplete Details" });
+  }
+  const device_exist = mobile_devices.findIndex((device) => device.device_id === device_id);
+  if (device_exist === -1) {
+    mobile_devices.push({
+      device_name,
+      device_id,
+      manufacturer,
+      message_token,
+    });
+  } else {
+    mobile_devices[device_exist].message_token = message_token;
+  }
+  await userDb.update(
+    {
+      last_updated_at: new Date().toISOString(),
+      mobile_devices,
+    },
+    uid
+  );
+  res.status(200).send({ success: true });
 });
 
 router.post("/create-token", async (req, res) => {
