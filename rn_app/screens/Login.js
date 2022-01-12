@@ -1,8 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-import auth from '@react-native-firebase/auth';
-
 import {useAuth} from '../context/AuthContext';
 
 import {Button} from 'native-base';
@@ -11,7 +9,7 @@ const Login = () => {
   const {currentUser, signIn, signInWithGoogle} = useAuth();
 
   const handleLogin = () => {
-    signIn('tushar@test.com', 'tushar');
+    signIn('tusharagrawal16@rediffmail.com', 'tushar');
   };
 
   return (

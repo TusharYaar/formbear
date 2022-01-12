@@ -9,7 +9,7 @@ import Login from '../screens/Login';
 import LoadingScreen from '../screens/LoadingScreen';
 import VerifyScreen from '../screens/VerifyScreen';
 import FormListView from '../screens/FormListView';
-// import FormDetailViewScreen from '../screens/FormDetailViewScreen';
+import FormDetailViewScreen from '../screens/FormDetailViewScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,15 +19,19 @@ const AppNavigator = () => {
   } = useAuth();
   if (isLoading) return <LoadingScreen />;
 
-  // if (isSignedIn && !isLoading && !user?.emailVerified) {
-  //   return <VerifyScreen />;
-  // }
+  if (isSignedIn && !isLoading && !user?.email_verified) {
+    return <VerifyScreen />;
+  }
 
   return (
     <Stack.Navigator>
       {isSignedIn ? (
         <>
           <Stack.Screen name="FormListView" component={FormListView} />
+          <Stack.Screen
+            name="FormDetailView"
+            component={FormDetailViewScreen}
+          />
         </>
       ) : (
         <>

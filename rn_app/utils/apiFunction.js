@@ -5,7 +5,7 @@ import {
   getDeviceName,
 } from 'react-native-device-info';
 
-const BASE_URL = 'https://cc04-49-36-37-192.ngrok.io/api';
+const BASE_URL = 'https://a180-49-36-37-192.ngrok.io/api';
 
 export const getUserProfile = async IdToken => {
   const response = await axios.get(`${BASE_URL}/profile`, {

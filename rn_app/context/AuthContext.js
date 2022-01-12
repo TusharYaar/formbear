@@ -44,8 +44,6 @@ export function AuthProvider({children}) {
     if (!storage.getString('app_settings.app_bootstrapped')) {
       messaging.registerDeviceForRemoteMessages();
       storage.set('app_settings.app_bootstrapped', 'true');
-    } else {
-      console.log('App already bootstrapped');
     }
   }, []);
 
@@ -89,7 +87,6 @@ export function AuthProvider({children}) {
       await auth.signInWithEmailAndPassword(email, password);
     } catch (error) {
       setCurrentUser({...DEFUALT_USER_STATE, isLoading: false});
-      console.log(error.message);
       throw error;
     }
   };
@@ -106,6 +103,7 @@ export function AuthProvider({children}) {
   // };
 
   const logOut = () => {
+    setCurrentUser({...DEFUALT_USER_STATE, isLoading: false});
     auth.signOut();
   };
 
@@ -117,20 +115,46 @@ export function AuthProvider({children}) {
     auth.signInWithCredential(googleCredential);
   };
 
-  // const getForms = async () => {
-  //   try {
-  //     const IdToken = await auth.currentUser.getIdToken(true);
-  //     const response = await getUserForms(IdToken);
-  //     setCurrentUser({
-  //       ...currentUser,
-  //       user: {...currentUser.user, forms: response},
-  //     });
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.log(error.message);
-  //     throw error;
-  //   }
-  // };
+  const verifyEmail = async () => {
+    try {
+      await auth.currentUser.sendEmailVerification();
+    } catch (error) {
+      console.log(error.message);
+      throw error;
+    }
+  };
+
+  const checkEmailVerified = async () => {
+    try {
+      const isVerified = await auth.currentUser.emailVerified;
+      if (isVerified !== currentUser.user.email_verified)
+        console.log('Email Verified: ', isVerified);
+      setCurrentUser({
+        ...currentUser,
+        user: {
+          ...currentUser.user,
+          email_verified: isVerified,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getForms = async () => {
+    try {
+      const IdToken = await auth.currentUser.getIdToken(true);
+      const response = await getUserForms(IdToken);
+      setCurrentUser({
+        ...currentUser,
+        user: {...currentUser.user, forms: response},
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error.message);
+      throw error;
+    }
+  };
 
   // const deleteForm = async formId => {
   //   try {
@@ -186,9 +210,11 @@ export function AuthProvider({children}) {
     currentUser,
     logOut,
     signIn,
+    verifyEmail,
     // signUp,
+    checkEmailVerified,
     signInWithGoogle,
-    // getForms,
+    getForms,
     // toggleStar,
     // deleteForm,
   };

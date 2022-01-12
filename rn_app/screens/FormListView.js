@@ -1,33 +1,84 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, View, Alert} from 'react-native';
 
-import {Button, FlatList} from 'native-base';
+import {Button, FlatList, Modal} from 'native-base';
 
 import {useAuth} from '../context/AuthContext';
+import FormListItem from '../components/FormListItem';
 
-const FormListView = () => {
+const FormListView = ({navigation}) => {
   const {
     currentUser: {
       user: {forms},
-      isLoading,
-      isSignedIn,
     },
+    getForms,
     logOut,
   } = useAuth();
 
-  console.log(forms);
+  const [formsLoading, setFormsLoading] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
+  const handleFormViewNavigation = formId => {
+    console.log(formId);
+    setMenuVisible(false);
+    navigation.navigate('FormDetailView', {formId});
+  };
+
+  const showMenu = () => {
+    setMenuVisible(true);
+    console.log('menuVisible', menuVisible);
+  };
+
+  const refreshForms = async () => {
+    try {
+      setFormsLoading(true);
+      await getForms();
+      setFormsLoading(false);
+    } catch (error) {
+      Alert.alert('ERror', error.message);
+    }
+  };
   return (
     <View>
-      <Button onPress={logOut}>Logout</Button>
+      <Modal
+        isOpen={menuVisible}
+        onClose={() => setMenuVisible(false)}
+        size="lg">
+        <Modal.Content maxWidth="350">
+          <Modal.CloseButton />
+          <Modal.Header>Options</Modal.Header>
+          <Modal.Body></Modal.Body>
+          <Modal.Footer>
+            <Button onPress={() => setMenuVisible(false)}>Close</Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
       <FlatList
-        data={forms.items}
-        renderItem={({item}) => <Text>{item.created_at}</Text>}
+        data={[...forms.items, {type: 'logout'}]}
+        refreshing={formsLoading}
+        onRefresh={refreshForms}
+        renderItem={({item}) =>
+          item.type === 'logout' ? (
+            <Button style={styles.logoutButton} onPress={logOut}>
+              Logout
+            </Button>
+          ) : (
+            <FormListItem
+              form={item}
+              onLongPress={showMenu}
+              onPress={handleFormViewNavigation}
+            />
+          )
+        }
       />
-      <Text>FormListView</Text>
     </View>
   );
 };
 
 export default FormListView;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  logoutButton: {
+    marginTop: 40,
+    marginHorizontal: 10,
+  },
+});
