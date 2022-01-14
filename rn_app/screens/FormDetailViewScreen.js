@@ -17,6 +17,7 @@ const FormDetailViewScreen = ({route}) => {
   } = useAuth();
 
   const [keysArray, setKeysArray] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const addKeyToArray = key => {
     setKeysArray(prev => [...prev, key]);
@@ -42,7 +43,8 @@ const FormDetailViewScreen = ({route}) => {
       <View>
         <View style={styles.objKeysViewContainer}>
           <View style={styles.objKeysView}>
-            {keysArray.map((key, index) => (
+            {keysArray.length > 6 && <Text>...</Text>}
+            {keysArray.slice(-6).map((key, index) => (
               <Text key={key} style={{marginLeft: index * 15}}>
                 {key}
               </Text>

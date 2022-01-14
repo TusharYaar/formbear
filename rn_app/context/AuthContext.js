@@ -156,55 +156,55 @@ export function AuthProvider({children}) {
     }
   };
 
-  // const deleteForm = async formId => {
-  //   try {
-  //     const IdToken = await auth.currentUser.getIdToken(true);
-  //     const response = await deleteUserForm(IdToken, formId);
-  //     console.log(response);
-  //     const updatedForms = currentUser.user.forms.items.filter(
-  //       form => form.key !== formId,
-  //     );
-  //     setCurrentUser({
-  //       ...currentUser,
-  //       user: {
-  //         ...currentUser.user,
-  //         forms: {
-  //           items: updatedForms,
-  //           count: updatedForms.length,
-  //         },
-  //       },
-  //     });
-  //   } catch (error) {
-  //     console.log(error.message);
-  //     throw error;
-  //   }
-  // };
-  // const toggleStar = async formId => {
-  //   try {
-  //     const IdToken = await auth.currentUser.getIdToken(true);
-  //     const response = await toggleUserFormStar(IdToken, formId);
-  //     console.log(response);
-  //     const updatedForms = currentUser.user.forms.items.map(form => {
-  //       if (form.key === formId) {
-  //         return {...form, star: !form.star};
-  //       }
-  //       return form;
-  //     });
-  //     setCurrentUser({
-  //       ...currentUser,
-  //       user: {
-  //         ...currentUser.user,
-  //         forms: {
-  //           items: updatedForms,
-  //           count: updatedForms.length,
-  //         },
-  //       },
-  //     });
-  //   } catch (error) {
-  //     console.log(error.message);
-  //     throw error;
-  //   }
-  // };
+  const deleteForm = async formId => {
+    try {
+      const IdToken = await auth.currentUser.getIdToken(true);
+      const response = await deleteUserForm(IdToken, formId);
+      console.log(response);
+      const updatedForms = currentUser.user.forms.items.filter(
+        form => form.key !== formId,
+      );
+      setCurrentUser({
+        ...currentUser,
+        user: {
+          ...currentUser.user,
+          forms: {
+            items: updatedForms,
+            count: updatedForms.length,
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error.message);
+      throw error;
+    }
+  };
+  const toggleStar = async formId => {
+    try {
+      const IdToken = await auth.currentUser.getIdToken(true);
+      const response = await toggleUserFormStar(IdToken, formId);
+      console.log(response);
+      const updatedForms = currentUser.user.forms.items.map(form => {
+        if (form.key === formId) {
+          return {...form, star: !form.star};
+        }
+        return form;
+      });
+      setCurrentUser({
+        ...currentUser,
+        user: {
+          ...currentUser.user,
+          forms: {
+            items: updatedForms,
+            count: updatedForms.length,
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error.message);
+      throw error;
+    }
+  };
 
   const value = {
     currentUser,
@@ -215,8 +215,8 @@ export function AuthProvider({children}) {
     checkEmailVerified,
     signInWithGoogle,
     getForms,
-    // toggleStar,
-    // deleteForm,
+    toggleStar,
+    deleteForm,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
