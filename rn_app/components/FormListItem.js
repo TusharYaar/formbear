@@ -11,7 +11,9 @@ const FormListItem = ({form, onLongPress, onPress}) => {
 
   return (
     <View style={styles.itemContainer}>
-      <Pressable onLongPress={onLongPress} onPress={handleFormClick}>
+      <Pressable
+        onLongPress={() => onLongPress(true, form.key)}
+        onPress={handleFormClick}>
         <Text fontSize="xl">{form.created_at}</Text>
         <Text noOfLines={1}>{JSON.stringify(form.form_response)}</Text>
       </Pressable>

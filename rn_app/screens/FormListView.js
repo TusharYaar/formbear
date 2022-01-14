@@ -16,16 +16,19 @@ const FormListView = ({navigation}) => {
   } = useAuth();
 
   const [formsLoading, setFormsLoading] = useState(false);
-  const [menuVisible, setMenuVisible] = useState(false);
+  const [modal, setModal] = useState({
+    formId: '',
+    visible: false,
+  });
   const handleFormViewNavigation = formId => {
     console.log(formId);
-    setMenuVisible(false);
+    setModal(false);
     navigation.navigate('FormDetailView', {formId});
   };
 
-  const showMenu = () => {
-    setMenuVisible(true);
-    console.log('menuVisible', menuVisible);
+  const toggleModal = (visible, formId = '') => {
+    setModal({formId, visible});
+    console.log('menuVisible', modal);
   };
 
   const refreshForms = async () => {
@@ -34,22 +37,19 @@ const FormListView = ({navigation}) => {
       await getForms();
       setFormsLoading(false);
     } catch (error) {
-      Alert.alert('ERror', error.message);
+      Alert.alert('Error', error.message);
     }
   };
   return (
     <View>
       <Modal
-        isOpen={menuVisible}
-        onClose={() => setMenuVisible(false)}
+        isOpen={modal.visible}
+        onClose={() => toggleModal(false, '')}
         size="lg">
         <Modal.Content maxWidth="350">
           <Modal.CloseButton />
           <Modal.Header>Options</Modal.Header>
           <Modal.Body></Modal.Body>
-          <Modal.Footer>
-            <Button onPress={() => setMenuVisible(false)}>Close</Button>
-          </Modal.Footer>
         </Modal.Content>
       </Modal>
       <FlatList
@@ -64,7 +64,7 @@ const FormListView = ({navigation}) => {
           ) : (
             <FormListItem
               form={item}
-              onLongPress={showMenu}
+              onLongPress={toggleModal}
               onPress={handleFormViewNavigation}
             />
           )
