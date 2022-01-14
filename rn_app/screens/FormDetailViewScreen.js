@@ -4,6 +4,7 @@ import {StyleSheet, View, ScrollView} from 'react-native';
 import {parseISO, format} from 'date-fns';
 
 import {useAuth} from '../context/AuthContext';
+import cuid from 'cuid';
 
 import ViewObject from '../components/ViewObject';
 import {Button, Text} from 'native-base';
@@ -32,20 +33,28 @@ const FormDetailViewScreen = ({route}) => {
   return (
     <ScrollView style={styles.container}>
       <Text fontSize="lg">
-        Recieved at:
-        {format(parseISO(form.created_at), 'dd-MM-yy ')}
+        <Text bold>Recieved at:</Text>
+        {format(parseISO(form.created_at), ' dd-MM-yy ')}
         at
         {format(parseISO(form.created_at), ' hh:mm aa')}
       </Text>
-      <Text>Form Id: {form.key}</Text>
-      <Text>Sent To: {form.email}</Text>
-      <Text>Response</Text>
+      <Text fontSize="lg">
+        <Text bold>Form Id: </Text>
+        {form.key}
+      </Text>
+      <Text fontSize="lg">
+        <Text bold>Sent To: </Text>
+        {form.email}
+      </Text>
+      <Text fontSize="lg" bold>
+        Response
+      </Text>
       <View>
         <View style={styles.objKeysViewContainer}>
           <View style={styles.objKeysView}>
             {keysArray.length > 6 && <Text>...</Text>}
             {keysArray.slice(-6).map((key, index) => (
-              <Text key={key} style={{marginLeft: index * 15}}>
+              <Text key={cuid()} fontSize="md" style={{marginLeft: index * 15}}>
                 {key}
               </Text>
             ))}
@@ -80,6 +89,7 @@ const styles = StyleSheet.create({
   objKeysViewContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 20,
   },
   objKeysView: {
     flex: 1,

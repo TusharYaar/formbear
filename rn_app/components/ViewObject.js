@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import {Button, Text} from 'native-base';
+import cuid from 'cuid';
 
 const color = [
   '#ffd54f',
@@ -27,10 +28,10 @@ const ViewObject = ({object, addKeyToArray, keysArray}) => {
       index++;
       table.push(
         <View
-          key={key}
+          key={cuid()}
           style={[
             styles.tableRow,
-            index % 2 ? null : {backgroundColor: color[nestLvl]},
+            index % 2 ? {backgroundColor: color[nestLvl % color.length]} : null,
           ]}>
           <Text style={styles.tableData} fontSize="lg">
             {key}
