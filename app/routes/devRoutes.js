@@ -6,8 +6,10 @@ const { devCorsOptions } = require("../utils/cors");
 const { generateToken } = require("../utils/token");
 
 const { checkDevEnv, addUserData } = require("../middlewares/devMiddleware");
+const { notifyUserForForm } = require("../utils/form");
 
 const { userDb, tokenDb, formDb } = require("../database");
+const { route } = require("./userRoutes");
 
 // Enable CORS
 router.use(cors(devCorsOptions));
@@ -41,5 +43,15 @@ router.post("/create-token", checkDevEnv, addUserData, async (req, res) => {
   } catch (err) {
     console.log(err);
     res.send({ error: err });
+  }
+});
+
+router.get("/send-notification", checkDevEnv, addUserData, async (req, res) => {
+  try {
+    await notifyUserForForm(req.user.mobile_devices, "helo");
+    res.send({ success: true });
+  } catch (err) {
+    console.log(err);
+    res.send({ error: err.message });
   }
 });

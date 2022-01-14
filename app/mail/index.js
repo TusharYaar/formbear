@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.ethereal.email",
+  host: "smtppro.zoho.in",
   port: 465,
   secure: true,
   auth: {
@@ -9,3 +9,15 @@ const transporter = nodemailer.createTransport({
     pass: process.env.PASSWORD,
   },
 });
+
+const sendNewFormEmail = async (email, body) => {
+  const mailOptions = {
+    from: process.env.USEREMAIL,
+    to: email,
+    subject: "New Form Submitted",
+    text: "New form submitted",
+  };
+  await transporter.sendMail(mailOptions);
+};
+
+module.exports = { sendNewFormEmail };

@@ -7,5 +7,5 @@ admin.initializeApp({
 });
 
 const auth = admin.auth();
-
-module.exports = { admin, auth };
+const messaging = admin.messaging();
+module.exports = { admin, auth, messaging };

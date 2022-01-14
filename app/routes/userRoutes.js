@@ -62,7 +62,7 @@ router.post("/create-token", async (req, res) => {
     res.send({ application });
   } catch (err) {
     console.log(err);
-    res.send({ error: err });
+    res.send({ error: err.message });
   }
 });
 
@@ -73,7 +73,7 @@ router.get("/user-forms", async (req, res) => {
     res.send(forms);
   } catch (err) {
     console.log(err);
-    res.send({ error: err });
+    res.send({ error: err.message });
   }
 });
 
@@ -90,7 +90,7 @@ router.delete("/user-forms/:id", async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-    res.send({ error: err });
+    res.send({ error: err.message });
   }
 });
 
@@ -107,7 +107,7 @@ router.get("/user-forms/:id/star", async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-    res.send({ error: err });
+    res.send({ error: err.message });
   }
 });
 

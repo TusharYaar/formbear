@@ -60,10 +60,11 @@ const verifyUser = async (req, res, next) => {
       userDb.update(
         {
           last_login_at: new_login_at,
+          email_verified,
         },
         uid
       );
-      // user.last_login_at = new_login_at;
+      user.email_verified = email_verified;
     }
 
     // check is user is disabled
