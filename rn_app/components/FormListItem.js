@@ -45,6 +45,7 @@ const FormListItem = ({form, onLongPress, onPress, onStarPress, isLoading}) => {
               <Icon
                 name={form.star ? 'star' : 'star-outline'}
                 size={24}
+                color="#f59e0b"
                 onPress={handleToggleStar}
               />
             }
@@ -61,9 +62,10 @@ const styles = StyleSheet.create({
   itemContainer: {
     marginVertical: 5,
     marginHorizontal: 10,
-    borderColor: '#ccc',
+    borderColor: '#1C5141',
     borderWidth: 1,
     borderRadius: 5,
+    backgroundColor: '#fff',
   },
   pressable: {
     padding: 10,

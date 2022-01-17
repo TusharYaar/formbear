@@ -69,7 +69,7 @@ const FormListView = ({navigation}) => {
     }
   };
   return (
-    <View>
+    <View style={styles.container}>
       <Modal
         isOpen={modal.visible}
         onClose={() => toggleModal(false, '')}
@@ -121,10 +121,11 @@ const FormListView = ({navigation}) => {
 export default FormListView;
 
 const styles = StyleSheet.create({
-  logoutButton: {
-    marginTop: 40,
-    marginHorizontal: 10,
+  container: {
+    flex: 1,
+    backgroundColor: '#f4f4f4',
   },
+
   modalButton: {
     marginVertical: 5,
   },
