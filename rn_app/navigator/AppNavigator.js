@@ -27,9 +27,14 @@ const AppNavigator = () => {
     <Stack.Navigator>
       {isSignedIn ? (
         <>
-          <Stack.Screen name="FormListView" component={FormListView} />
+          <Stack.Screen
+            name="FormListView"
+            component={FormListView}
+            options={{title: 'All Forms'}}
+          />
           <Stack.Screen
             name="FormDetailView"
+            options={({route}) => ({title: route.params.formId})}
             component={FormDetailViewScreen}
           />
         </>

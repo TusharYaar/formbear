@@ -21,9 +21,9 @@ const ViewObject = ({object, addKeyToArray, keysArray}) => {
       myObj = myObj[key];
     });
     const nestLvl = keysArray.length;
-
     let table = [];
     let index = 0;
+
     for (const key in myObj) {
       index++;
       table.push(

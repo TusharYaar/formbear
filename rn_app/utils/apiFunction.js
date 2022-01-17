@@ -5,7 +5,7 @@ import {
   getDeviceName,
 } from 'react-native-device-info';
 
-const BASE_URL = 'https://66dd-49-36-37-192.ngrok.io/api';
+const BASE_URL = 'https://d34a-49-36-37-192.ngrok.io/api';
 
 export const getUserProfile = async IdToken => {
   const response = await axios.get(`${BASE_URL}/profile`, {
@@ -64,5 +64,17 @@ export const toggleUserFormStar = async (IdToken, formId) => {
       Authorization: `Bearer ${IdToken}`,
     },
   });
+  return response.data;
+};
+
+export const markFormRead = async (IdToken, formId) => {
+  const response = await axios.get(
+    `${BASE_URL}/user-forms/${formId}/mark-read`,
+    {
+      headers: {
+        Authorization: `Bearer ${IdToken}`,
+      },
+    },
+  );
   return response.data;
 };

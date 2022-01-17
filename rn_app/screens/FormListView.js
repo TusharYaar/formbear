@@ -6,7 +6,7 @@ import {Button, FlatList, Modal} from 'native-base';
 import {useAuth} from '../context/AuthContext';
 import FormListItem from '../components/FormListItem';
 
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import FlatlistItem from '../components/FlatlistItem';
 
 const FormListView = ({navigation}) => {
   const {
@@ -15,7 +15,6 @@ const FormListView = ({navigation}) => {
     },
     toggleStar,
     getForms,
-    logOut,
     deleteForm,
   } = useAuth();
 
@@ -101,28 +100,19 @@ const FormListView = ({navigation}) => {
         </Modal.Content>
       </Modal>
       <FlatList
-        data={[...forms.items, {type: 'logout'}]}
+        data={[{type: 'userinfo'}, ...forms.items]}
         refreshing={formsLoading}
         onRefresh={refreshForms}
-        renderItem={({item}) =>
-          item.type === 'logout' ? (
-            <Button
-              leftIcon={<Icon name="logout-variant" size={24} color="white" />}
-              style={styles.logoutButton}
-              isDisabled={isLoading || formsLoading}
-              onPress={logOut}>
-              Logout
-            </Button>
-          ) : (
-            <FormListItem
-              form={item}
-              onLongPress={toggleModal}
-              onPress={handleFormViewNavigation}
-              onStarPress={handleToggleStar}
-              isLoading={isLoading}
-            />
-          )
-        }
+        renderItem={({item}) => (
+          <FlatlistItem
+            item={item}
+            isLoading={isLoading}
+            formsLoading={formsLoading}
+            toggleModal={toggleModal}
+            handleFormViewNavigation={handleFormViewNavigation}
+            handleToggleStar={handleToggleStar}
+          />
+        )}
       />
     </View>
   );

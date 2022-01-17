@@ -1,20 +1,23 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
-import {StyleSheet, View, ScrollView} from 'react-native';
+import {StyleSheet, View, Alert, ScrollView} from 'react-native';
 import {parseISO, format} from 'date-fns';
 
 import {useAuth} from '../context/AuthContext';
 import cuid from 'cuid';
 
 import ViewObject from '../components/ViewObject';
-import {Button, Text} from 'native-base';
+import {Button, IconButton, Text, Spinner} from 'native-base';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const FormDetailViewScreen = ({route}) => {
+const FormDetailViewScreen = ({navigation, route}) => {
   const {formId} = route.params;
   const {
     currentUser: {
       user: {forms},
     },
+    toggleStar,
+    markRead,
   } = useAuth();
 
   const [keysArray, setKeysArray] = useState([]);
@@ -28,7 +31,44 @@ const FormDetailViewScreen = ({route}) => {
     setKeysArray(prev => prev.slice(0, -1));
   };
 
+  const handleToggleStar = async () => {
+    try {
+      setIsLoading(true);
+      await toggleStar(formId);
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    let form = forms.items.find(form => form.key === formId);
+
+    if (!form.form_viewed) {
+      markRead(formId);
+    }
+  }, [formId]);
+
   const form = forms.items.find(form => form.key === formId);
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () =>
+        isLoading ? (
+          <Spinner accessibilityLabel="Loading posts" />
+        ) : (
+          <IconButton
+            isDisabled={isLoading}
+            icon={
+              <Icon
+                name={form.star ? 'star' : 'star-outline'}
+                size={24}
+                onPress={handleToggleStar}
+              />
+            }
+          />
+        ),
+    });
+  }, [navigation, form, isLoading]);
 
   return (
     <ScrollView style={styles.container}>

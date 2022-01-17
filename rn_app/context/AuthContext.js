@@ -15,6 +15,7 @@ import {
   getUserForms,
   deleteUserForm,
   toggleUserFormStar,
+  markFormRead,
 } from '../utils/apiFunction';
 
 const DEFUALT_USER_STATE = {
@@ -206,6 +207,32 @@ export function AuthProvider({children}) {
     }
   };
 
+  const markRead = async formId => {
+    try {
+      const IdToken = await auth.currentUser.getIdToken(true);
+      const response = await markFormRead(IdToken, formId);
+      console.log(response);
+      const updatedForms = currentUser.user.forms.items.map(form => {
+        if (form.key === formId) {
+          return {...form, form_viewed: true};
+        }
+        return form;
+      });
+      setCurrentUser({
+        ...currentUser,
+        user: {
+          ...currentUser.user,
+          forms: {
+            items: updatedForms,
+            count: updatedForms.length,
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error.message);
+      throw error;
+    }
+  };
   const value = {
     currentUser,
     logOut,
@@ -217,6 +244,7 @@ export function AuthProvider({children}) {
     getForms,
     toggleStar,
     deleteForm,
+    markRead,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

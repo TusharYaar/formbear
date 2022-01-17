@@ -19,15 +19,24 @@ const FormListItem = ({form, onLongPress, onPress, onStarPress, isLoading}) => {
   return (
     <View style={styles.itemContainer}>
       <Pressable
+        style={({pressed}) => [
+          pressed ? styles.itemContainerPressed : null,
+          styles.pressable,
+        ]}
+        delayLongPress={200}
         onLongPress={() => onLongPress(true, form.key)}
         onPress={handleFormClick}>
         <View style={styles.item}>
           <View style={styles.descriptionContainer}>
-            <Text fontSize="lg" bold>
+            <Text fontSize="lg" bold={!form.form_viewed}>
               {form.key}
             </Text>
-            <Text>{format(parseISO(form.created_at), 'do MM, yyyy')}</Text>
-            <Text>{format(parseISO(form.created_at), 'hh:mm aa')}</Text>
+            <Text bold={!form.form_viewed}>
+              {format(parseISO(form.created_at), 'do MM, yyyy')}
+            </Text>
+            <Text bold={!form.form_viewed}>
+              {format(parseISO(form.created_at), 'hh:mm aa')}
+            </Text>
             <Text noOfLines={1}>{JSON.stringify(form.form_response)}</Text>
           </View>
           <IconButton
@@ -50,12 +59,17 @@ export default FormListItem;
 
 const styles = StyleSheet.create({
   itemContainer: {
-    padding: 10,
     marginVertical: 5,
     marginHorizontal: 10,
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 5,
+  },
+  pressable: {
+    padding: 10,
+  },
+  itemContainerPressed: {
+    backgroundColor: '#ccc',
   },
   item: {
     flexDirection: 'row',
