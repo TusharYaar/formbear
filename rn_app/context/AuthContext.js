@@ -87,6 +87,7 @@ export function AuthProvider({children}) {
     try {
       await auth.signInWithEmailAndPassword(email, password);
     } catch (error) {
+      console.log(error);
       setCurrentUser({...DEFUALT_USER_STATE, isLoading: false});
       throw error;
     }
@@ -109,11 +110,16 @@ export function AuthProvider({children}) {
   };
 
   const signInWithGoogle = async () => {
-    const {idToken} = await GoogleSignin.signIn();
-    const googleCredential =
-      firebaseAuth.GoogleAuthProvider.credential(idToken);
-    // return
-    auth.signInWithCredential(googleCredential);
+    try {
+      const {idToken} = await GoogleSignin.signIn();
+      const googleCredential =
+        firebaseAuth.GoogleAuthProvider.credential(idToken);
+      auth.signInWithCredential(googleCredential);
+      return;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   };
 
   const verifyEmail = async () => {
@@ -233,11 +239,22 @@ export function AuthProvider({children}) {
       throw error;
     }
   };
+
+  const forgotPassword = async email => {
+    try {
+      await auth.sendPasswordResetEmail(email);
+    } catch (error) {
+      console.log(error.message);
+      throw error;
+    }
+  };
+
   const value = {
     currentUser,
     logOut,
     signIn,
     verifyEmail,
+    forgotPassword,
     // signUp,
     checkEmailVerified,
     signInWithGoogle,
