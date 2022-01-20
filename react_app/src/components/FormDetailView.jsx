@@ -12,7 +12,7 @@ const FormDetailView = ({ form, handleFormDetailView, maxWidth = 900, compLoadin
   const closeView = () => {
     handleFormDetailView(null);
   };
-  const { toggleStar, deleteForm } = useAuth();
+  const { toggleStar, deleteForm, currentUser } = useAuth();
   const handleStar = async (event) => {
     try {
       event.stopPropagation();
@@ -35,7 +35,7 @@ const FormDetailView = ({ form, handleFormDetailView, maxWidth = 900, compLoadin
     setCompLoading(false);
   };
   return (
-    <MotionBox initial={{ width: 0 }} animate={{ width: maxWidth }} exit={{ width: 0 }} p={4}>
+    <MotionBox initial={{ width: 0 }} animate={{ width: "auto" }} exit={{ width: 0 }} p={4}>
       <HStack justify="space-between">
         <IconButton colorScheme="blue" aria-label="Search database" icon={<RiCloseCircleLine />} onClick={closeView} />
         <HStack>

@@ -5,18 +5,12 @@ const THEMES = [
   "red",
   "green",
   "orange",
-  "yellow",
-  "teal",
-  "blue",
-  "cyan",
   "purple",
-  "pink",
-  "linkedin",
-  "facebook",
-  "messenger",
-  "whatsapp",
-  "twitter",
-  "telegram",
+  "yellow",
+  // "teal",
+  // "cyan",
+  // "blue",
+  // "pink",
 ];
 
 const DataTable = ({ data, nestLvl }) => {

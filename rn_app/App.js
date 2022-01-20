@@ -6,18 +6,20 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {NativeBaseProvider} from 'native-base';
 
-import {AuthProvider, useAuth} from './context/AuthContext';
+import {AuthProvider} from './context/AuthContext';
 
-import AppNavigator from "./navigator/AppNavigator";
+import AppNavigator from './navigator/AppNavigator';
 
-
-
+import RNBootSplash from 'react-native-bootsplash';
 
 const App = () => {
+  useEffect(() => {
+    RNBootSplash.hide({fade: true});
+  }, []);
 
   return (
     <NativeBaseProvider>

@@ -111,4 +111,21 @@ router.get("/user-forms/:id/star", async (req, res) => {
   }
 });
 
+router.get("/user-forms/:id/mark-read", async (req, res) => {
+  try {
+    const { email } = req.user;
+    const { id } = req.params;
+    const form = await getForm(email, id);
+    if (form) {
+      await formDb.update({ form_viewed: true }, id);
+      res.send({ success: true });
+    } else {
+      res.send({ error: "Form not found" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.send({ error: err.message });
+  }
+});
+
 module.exports = router;

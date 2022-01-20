@@ -58,8 +58,10 @@ const Dashboard = () => {
   }
 
   return (
-    <Flex h="100%" grow={1} overflowX="hidden">
-      <VStack w={[320, 400, 300]} grow={1}></VStack>
+    <Flex h="100%" grow={1}>
+      <VStack w={[320, 400, 300]} grow={1}>
+        <Text>Jas</Text>
+      </VStack>
       <Box w="100%">
         <HStack justify="space-between" p={4}>
           <Flex direction={["column", "row"]} align="center" grow={1}>
