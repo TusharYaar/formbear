@@ -166,8 +166,6 @@ export function AuthProvider({children}) {
   const deleteForm = async formId => {
     try {
       const IdToken = await auth.currentUser.getIdToken(true);
-      const response = await deleteUserForm(IdToken, formId);
-      console.log(response);
       const updatedForms = currentUser.user.forms.items.filter(
         form => form.key !== formId,
       );
@@ -181,6 +179,7 @@ export function AuthProvider({children}) {
           },
         },
       });
+      await deleteUserForm(IdToken, formId);
     } catch (error) {
       console.log(error.message);
       throw error;
@@ -189,8 +188,6 @@ export function AuthProvider({children}) {
   const toggleStar = async formId => {
     try {
       const IdToken = await auth.currentUser.getIdToken(true);
-      const response = await toggleUserFormStar(IdToken, formId);
-      console.log(response);
       const updatedForms = currentUser.user.forms.items.map(form => {
         if (form.key === formId) {
           return {...form, star: !form.star};
@@ -207,6 +204,7 @@ export function AuthProvider({children}) {
           },
         },
       });
+      await toggleUserFormStar(IdToken, formId);
     } catch (error) {
       console.log(error.message);
       throw error;
