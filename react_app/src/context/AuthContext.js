@@ -9,7 +9,13 @@ import {
 
 import { auth, googleProvider } from "../firebase/config";
 
-import { getUserProfile, getUserForms, deleteUserForm, toggleUserFormStar } from "../Utils/apiFunction";
+import {
+  getUserProfile,
+  getUserForms,
+  deleteUserForm,
+  toggleUserFormStar,
+  markUserFormViewed,
+} from "../Utils/apiFunction";
 
 const DEFUALT_USER_STATE = {
   isSignedIn: false,
@@ -126,11 +132,36 @@ export function AuthProvider({ children }) {
   const toggleStar = async (formId) => {
     try {
       const IdToken = await auth.currentUser.getIdToken(true);
-      const response = await toggleUserFormStar(IdToken, formId);
-      console.log(response);
+      await toggleUserFormStar(IdToken, formId);
       const updatedForms = currentUser.user.forms.items.map((form) => {
         if (form.key === formId) {
           return { ...form, star: !form.star };
+        }
+        return form;
+      });
+      setUser({
+        ...currentUser,
+        user: {
+          ...currentUser.user,
+          forms: {
+            items: updatedForms,
+            count: updatedForms.length,
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error.message);
+      throw error;
+    }
+  };
+
+  const markFormViewed = async (formId) => {
+    try {
+      const IdToken = await auth.currentUser.getIdToken(true);
+      await markUserFormViewed(IdToken, formId);
+      const updatedForms = currentUser.user.forms.items.map((form) => {
+        if (form.key === formId) {
+          return { ...form, form_viewed: true };
         }
         return form;
       });
@@ -158,6 +189,7 @@ export function AuthProvider({ children }) {
     signInWithGoogle,
     getForms,
     toggleStar,
+    markFormViewed,
     deleteForm,
   };
 

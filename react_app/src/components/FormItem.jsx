@@ -56,8 +56,12 @@ const FormItem = ({ isOpen, data, handleFormDetailView, compLoading, setCompLoad
           isLoading={compLoading}
         />
         <VStack spacing={0} align="start" grow={1} mx={4}>
-          <Text>{format(parseISO(data.created_at), "MMM d, yyyy")}</Text>
-          <Text noOfLines={1} fontSize="sm">
+          <Text fontWeight={data.form_viewed ? "semibold" : "bold"}>{data.key}</Text>
+
+          <Text fontWeight={data.form_viewed ? "normal" : "bold"}>
+            {format(parseISO(data.created_at), "MMM d, yyyy")}
+          </Text>
+          <Text noOfLines={1} fontSize="sm" fontWeight={data.form_viewed ? "normal" : "bold"}>
             {JSON.stringify(data.form_response)}
           </Text>
         </VStack>

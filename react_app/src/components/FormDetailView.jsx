@@ -1,5 +1,6 @@
-import { Box, Text, IconButton, forwardRef, HStack } from "@chakra-ui/react";
-import { motion, isValidMotionProp } from "framer-motion";
+import { useEffect } from "react";
+import { Box, IconButton, HStack } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { AiTwotoneStar, AiOutlineStar, AiFillDelete } from "react-icons/ai";
 
@@ -9,10 +10,17 @@ import { useAuth } from "../context/AuthContext";
 // 1. Create a custom motion component from Box
 const MotionBox = motion(Box);
 const FormDetailView = ({ form, handleFormDetailView, maxWidth = 900, compLoading, setCompLoading }) => {
+  const { toggleStar, deleteForm, markFormViewed } = useAuth();
+
+  useEffect(() => {
+    if (!form.form_viewed) {
+      markFormViewed(form.key);
+    }
+  }, [form, markFormViewed]);
+
   const closeView = () => {
     handleFormDetailView(null);
   };
-  const { toggleStar, deleteForm, currentUser } = useAuth();
   const handleStar = async (event) => {
     try {
       event.stopPropagation();
@@ -35,7 +43,7 @@ const FormDetailView = ({ form, handleFormDetailView, maxWidth = 900, compLoadin
     setCompLoading(false);
   };
   return (
-    <MotionBox initial={{ width: 0 }} animate={{ width: "auto" }} exit={{ width: 0 }} p={4}>
+    <MotionBox initial={{ width: 0 }} animate={{ width: maxWidth }} exit={{ width: 0 }} p={4}>
       <HStack justify="space-between">
         <IconButton colorScheme="blue" aria-label="Search database" icon={<RiCloseCircleLine />} onClick={closeView} />
         <HStack>

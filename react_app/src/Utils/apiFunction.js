@@ -37,3 +37,12 @@ export const toggleUserFormStar = async (IdToken, formId) => {
   });
   return response.data;
 };
+
+export const markUserFormViewed = async (IdToken, formId) => {
+  const response = await axios.get(`${BASE_URL}/user-forms/${formId}/mark-read`, {
+    headers: {
+      Authorization: `Bearer ${IdToken}`,
+    },
+  });
+  return response.data;
+};
