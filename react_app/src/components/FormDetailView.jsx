@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Box, IconButton, HStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { RiCloseCircleLine } from "react-icons/ri";
@@ -7,15 +7,19 @@ import { AiTwotoneStar, AiOutlineStar, AiFillDelete } from "react-icons/ai";
 import DataTable from "./DataTable";
 import { useAuth } from "../context/AuthContext";
 
+import ViewObject from "./ViewObject";
+
 // 1. Create a custom motion component from Box
 const MotionBox = motion(Box);
 const FormDetailView = ({ form, handleFormDetailView, maxWidth = 900, compLoading, setCompLoading }) => {
   const { toggleStar, deleteForm, markFormViewed } = useAuth();
+  const [keysArray, setKeysArray] = useState([]);
 
   useEffect(() => {
     if (!form.form_viewed) {
       markFormViewed(form.key);
     }
+    setKeysArray([]);
   }, [form, markFormViewed]);
 
   const closeView = () => {
@@ -30,6 +34,14 @@ const FormDetailView = ({ form, handleFormDetailView, maxWidth = 900, compLoadin
       console.log(error);
     }
     setCompLoading(false);
+  };
+
+  const addKeyToArray = (key) => {
+    setKeysArray((prev) => [...prev, key]);
+  };
+
+  const removeKeyFromArray = () => {
+    setKeysArray((prev) => prev.slice(0, -1));
   };
 
   const handleDelete = async (event) => {
@@ -62,7 +74,7 @@ const FormDetailView = ({ form, handleFormDetailView, maxWidth = 900, compLoadin
         </HStack>
       </HStack>
       <Box p={4}>
-        <DataTable data={form.form_response} nestLvl={0} />
+        <ViewObject object={form.form_response} keysArray={keysArray} addKeyToArray={addKeyToArray} />
       </Box>
     </MotionBox>
   );
