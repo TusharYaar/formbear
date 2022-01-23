@@ -15,33 +15,33 @@ const Navbar = () => {
 
   const { isOpen, onClose } = useDisclosure();
   return (
-    <Flex direction="row" align="center" justify="space-between" h={{ sm: "40px", md: "60px" }}>
+    <Flex direction="row" align="center" justify="space-between" h={{ sm: "40px", md: "60px" }} px={4}>
       <Link as={RouterLink} to="/" color="white" fontSize="lg">
         <Flex align="center" justify="center" direction="row">
           <Box px={4}>
             <Image src={Icon} alt="logo" boxSize={{ base: "30px", md: "50px" }} objectFit="cover" />
           </Box>
-          <Text fontSize="2xl" display={{ base: "none", md: "inline" }}>
+          <Text fontSize="2xl" fontWeight="bold" display={{ base: "none", md: "inline" }}>
             Formbear
           </Text>
         </Flex>
       </Link>
       <HStack spacing={4}>
         {isSignedIn && (
-          <Link as={RouterLink} to="/dashboard">
+          <Link as={RouterLink} to="/dashboard" fontWeight="bold">
             Dashboard
           </Link>
         )}
-        <Link as={RouterLink} to="/about">
+        <Link as={RouterLink} to="/about" fontWeight="bold">
           About
         </Link>
-        <Link as={RouterLink} to="/docs">
+        <Link as={RouterLink} to="/docs" fontWeight="bold">
           Docs
         </Link>
 
         {isLoading && <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="lg" />}
         {!isLoading && !isSignedIn && (
-          <Button as={RouterLink} to="/login" variant="outline" size="sm">
+          <Button as={RouterLink} to="/login" variant="outline" size="sm" fontWeight="bold">
             Login
           </Button>
         )}
