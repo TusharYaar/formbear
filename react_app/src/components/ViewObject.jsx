@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Box, Button, Text, Table, Thead, Tbody, Tfoot, Tr, Th, Td } from "@chakra-ui/react";
+import { Button, Text, Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
 import cuid from "cuid";
 
 const THEMES = ["gray", "red", "green", "orange", "purple", "yellow"];

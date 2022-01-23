@@ -46,3 +46,12 @@ export const markUserFormViewed = async (IdToken, formId) => {
   });
   return response.data;
 };
+
+export const deleteUserProfile = async (IdToken) => {
+  const response = await axios.delete(`${BASE_URL}/profile`, {
+    headers: {
+      Authorization: `Bearer ${IdToken}`,
+    },
+  });
+  return response.data;
+};

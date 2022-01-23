@@ -1,4 +1,4 @@
-import { Flex, Collapse } from "@chakra-ui/react";
+import { Flex, Collapse, Box } from "@chakra-ui/react";
 import Navbar from "./components/Navbar";
 
 import { Routes, Route, useLocation } from "react-router-dom";
@@ -8,7 +8,7 @@ import Authentication from "./pages/Authentication";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Docs from "./pages/Docs";
-import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 
 const ROUTES = ["/login", "/"];
 
@@ -18,11 +18,13 @@ function App() {
   return (
     <Flex h="100vh" direction="column">
       <Collapse in={!ROUTES.includes(pathname)}>
-        <Navbar />
+        <Box bg="blue.300" px={{ sm: 2, md: 4 }}>
+          <Navbar />
+        </Box>
       </Collapse>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Authentication />} />
         <Route path="/dashboard" element={<Dashboard />} exact />

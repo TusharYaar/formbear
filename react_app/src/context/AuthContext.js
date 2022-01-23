@@ -15,6 +15,7 @@ import {
   deleteUserForm,
   toggleUserFormStar,
   markUserFormViewed,
+  deleteUserProfile,
 } from "../Utils/apiFunction";
 
 const DEFUALT_USER_STATE = {
@@ -40,7 +41,6 @@ export function AuthProvider({ children }) {
         user: { email, emailVerified, uid, displayName, photoURL, forms: [] },
         isLoading: false,
       });
-      console.log("Fetching user profile");
       const IdToken = await user.getIdToken(true);
       const response = await getUserProfile(IdToken);
       console.log(response);
@@ -49,11 +49,8 @@ export function AuthProvider({ children }) {
         user: { email, emailVerified, uid, displayName, photoURL, ...response },
         isLoading: false,
       });
-
-      console.log("User Logged in");
     } else {
       setUser({ ...DEFUALT_USER_STATE, isLoading: false });
-      console.log("No User or User Logged Out");
     }
   }, []);
 
@@ -181,6 +178,17 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const deleteProfile = async () => {
+    try {
+      const IdToken = await auth.currentUser.getIdToken(true);
+      await deleteUserProfile(IdToken);
+      logOut();
+    } catch (error) {
+      console.log(error.message);
+      throw error;
+    }
+  };
+
   const value = {
     currentUser,
     logOut,
@@ -191,6 +199,7 @@ export function AuthProvider({ children }) {
     toggleStar,
     markFormViewed,
     deleteForm,
+    deleteProfile,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

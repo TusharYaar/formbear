@@ -4,9 +4,9 @@ import {
   MenuList,
   Button,
   MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
+  // MenuItemOption,
+  // MenuGroup,
+  // MenuOptionGroup,
   MenuDivider,
   Avatar,
 } from "@chakra-ui/react";
@@ -28,8 +28,8 @@ const NavMenu = () => {
         <Avatar name={user.name} src={user.photoURL} size="sm" />
       </MenuButton>
       <MenuList>
-        <MenuItem as={RouterLink} to="/profile">
-          Profile
+        <MenuItem as={RouterLink} to="/settings">
+          Settings
         </MenuItem>
         <MenuDivider />
         <MenuItem onClick={logOut}>Logout</MenuItem>
