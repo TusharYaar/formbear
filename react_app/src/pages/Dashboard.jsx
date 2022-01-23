@@ -62,7 +62,7 @@ const Dashboard = () => {
       <VStack w={[320, 400, 300]} grow={1}>
         <Text>Jas</Text>
       </VStack>
-      <Box w="100%">
+      <Box w="90%">
         <HStack justify="space-between" p={4}>
           <Flex direction={["column", "row"]} align="center" grow={1}>
             <Text fontSize="4xl">Dashboard</Text>

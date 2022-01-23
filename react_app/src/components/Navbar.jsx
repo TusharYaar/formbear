@@ -1,7 +1,9 @@
-import { Box, Link, Button, Spinner, HStack, Flex, Avatar, useDisclosure } from "@chakra-ui/react";
+import { Box, Link, Button, Spinner, HStack, Flex, Text, useDisclosure, Image } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
+
+import Icon from "../assests/icon.png";
 
 import { RiMenu2Line } from "react-icons/ri";
 
@@ -16,12 +18,17 @@ const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box bg="blue.300" px={{ sm: 2, md: 4 }}>
-      <Flex direction="row" align="center" justify="space-between" h={{ sm: 40, md: "60px" }}>
-        <Box>
-          <Link as={RouterLink} to="/" color="white" fontSize="lg">
-            Formbear
-          </Link>
-        </Box>
+      <Flex direction="row" align="center" justify="space-between" h={{ sm: "40px", md: "60px" }}>
+        <Link as={RouterLink} to="/" color="white" fontSize="lg">
+          <Flex align="center" justify="center" direction="row">
+            <Box px={4}>
+              <Image src={Icon} alt="logo" boxSize={{ base: "30px", md: "50px" }} objectFit="cover" />
+            </Box>
+            <Text fontSize="2xl" display={{ base: "none", md: "inline" }}>
+              Formbear
+            </Text>
+          </Flex>
+        </Link>
         <HStack spacing={4}>
           {isSignedIn && (
             <Link as={RouterLink} to="/dashboard">

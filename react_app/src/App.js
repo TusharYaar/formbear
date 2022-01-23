@@ -8,6 +8,7 @@ import Authentication from "./pages/Authentication";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Docs from "./pages/Docs";
+import Profile from "./pages/Profile";
 
 const ROUTES = ["/login", "/"];
 
@@ -21,6 +22,7 @@ function App() {
       </Collapse>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Authentication />} />
         <Route path="/dashboard" element={<Dashboard />} exact />

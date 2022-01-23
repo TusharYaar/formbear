@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { AiTwotoneStar, AiOutlineStar, AiFillDelete } from "react-icons/ai";
 
-import DataTable from "./DataTable";
 import { useAuth } from "../context/AuthContext";
 
 import ViewObject from "./ViewObject";

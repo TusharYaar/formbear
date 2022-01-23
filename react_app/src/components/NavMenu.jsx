@@ -11,6 +11,8 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 
+import { Link as RouterLink } from "react-router-dom";
+
 import { useAuth } from "../context/AuthContext";
 
 import { RiArrowDownSFill } from "react-icons/ri";
@@ -26,6 +28,9 @@ const NavMenu = () => {
         <Avatar name={user.name} src={user.photoURL} size="sm" />
       </MenuButton>
       <MenuList>
+        <MenuItem as={RouterLink} to="/profile">
+          Profile
+        </MenuItem>
         <MenuDivider />
         <MenuItem onClick={logOut}>Logout</MenuItem>
       </MenuList>
