@@ -18,7 +18,7 @@ function App() {
   return (
     <Flex h="100vh" direction="column">
       <Collapse in={!ROUTES.includes(pathname)}>
-        <Box bg="blue.300">
+        <Box bg="#3B82F6">
           <Navbar />
         </Box>
       </Collapse>

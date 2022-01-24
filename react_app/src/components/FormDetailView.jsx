@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, IconButton, HStack } from "@chakra-ui/react";
+import { Box, IconButton, HStack, Button, Flex, Text } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { AiTwotoneStar, AiOutlineStar, AiFillDelete } from "react-icons/ai";
@@ -7,6 +7,7 @@ import { AiTwotoneStar, AiOutlineStar, AiFillDelete } from "react-icons/ai";
 import { useAuth } from "../context/AuthContext";
 
 import ViewObject from "./ViewObject";
+import cuid from "cuid";
 
 // 1. Create a custom motion component from Box
 const MotionBox = motion(Box);
@@ -79,6 +80,19 @@ const FormDetailView = ({ form, handleFormDetailView, maxWidth = 900, compLoadin
           </HStack>
         </HStack>
         <Box p={4}>
+          <HStack spacing={4}>
+            <Flex grow={1} direction="column">
+              {keysArray.length > 6 && <Text>...</Text>}
+              {keysArray.slice(-8).map((key, index) => (
+                <Text key={cuid()} ml={index * 4} display="block">
+                  {key}
+                </Text>
+              ))}
+            </Flex>
+            <Button onClick={removeKeyFromArray} isDisabled={keysArray.length === 0}>
+              Back
+            </Button>
+          </HStack>
           <ViewObject object={form.form_response} keysArray={keysArray} addKeyToArray={addKeyToArray} />
         </Box>
       </Box>

@@ -11,17 +11,25 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
 
 import { RiArrowDownSFill } from "react-icons/ri";
 
 const NavMenu = () => {
+  let navigate = useNavigate();
+
   const {
     currentUser: { user },
     logOut,
   } = useAuth();
+
+  const handleLogout = () => {
+    navigate("/", { replace: true });
+    logOut();
+  };
+
   return (
     <Menu>
       <MenuButton as={Button} variant="link" rightIcon={<RiArrowDownSFill color="black" size={20} />}>
@@ -32,7 +40,7 @@ const NavMenu = () => {
           Settings
         </MenuItem>
         <MenuDivider />
-        <MenuItem onClick={logOut}>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </MenuList>
     </Menu>
   );

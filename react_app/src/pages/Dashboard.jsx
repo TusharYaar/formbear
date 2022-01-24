@@ -20,7 +20,7 @@ const Dashboard = () => {
   } = useAuth();
 
   const [openForm, setOpenForm] = useState();
-  const [filter, setFilter] = useState();
+  // const [filter, setFilter] = useState();
   const [search, setSearch] = useState("");
   const [compLoading, setCompLoading] = useState(true);
 

@@ -2,11 +2,14 @@ import { useState } from "react";
 
 import { Flex, Box, Text, HStack, Center, VStack, Link, IconButton, Tooltip } from "@chakra-ui/react";
 
-import { AiFillCloseCircle, AiFillWarning, AiFillSmile, AiFillBell, AiOutlineLink } from "react-icons/ai";
+import { AiFillCloseCircle, AiFillWarning, AiFillSmile, AiFillBell } from "react-icons/ai";
 
 import { ImFilesEmpty, ImSearch, ImGit, ImGithub, ImUser } from "react-icons/im";
 
 import { AnimatePresence, motion } from "framer-motion";
+
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { vs2015 } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 const MotionBox = motion(Flex);
 
@@ -63,7 +66,19 @@ const IdeWindow = (props) => {
             )}
           </AnimatePresence>
           <Flex w="100%" bg="#1E1E1E">
-            <Text color="#ffffff">Loading...</Text>
+            <SyntaxHighlighter
+              language="html"
+              style={vs2015}
+              wrapLongLines
+              showLineNumbers
+              customStyle={{ maxWidth: props.maxW * 0.65, width: "100%" }}>
+              {`<form action="" method="POST">    
+    <input type="text" name="name" required />   
+    <input type="email" name="email" required />
+    <button type="submit">Send</button>
+</form>`}
+              {/* function () =&gt; (hello = "world") */}
+            </SyntaxHighlighter>
           </Flex>
         </Flex>
         <Flex direction="row" bg="#505050" borderBottomRadius={10} align="center" justify="space-between">
