@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "https://formbear.tusharyaar.me/api";
 
 export const getUserProfile = async (IdToken) => {
   const response = await axios.get(`${BASE_URL}/profile`, {

@@ -9,6 +9,8 @@ import { useAuth } from "../context/AuthContext";
 import ViewObject from "./ViewObject";
 import cuid from "cuid";
 
+import { format, parseISO } from "date-fns";
+
 // 1. Create a custom motion component from Box
 const MotionBox = motion(Box);
 const FormDetailView = ({ form, handleFormDetailView, maxWidth = 900, compLoading, setCompLoading }) => {
@@ -56,7 +58,7 @@ const FormDetailView = ({ form, handleFormDetailView, maxWidth = 900, compLoadin
   };
   return (
     <MotionBox initial={{ width: 0 }} animate={{ width: maxWidth }} exit={{ width: 0 }}>
-      <Box p={4}>
+      <Box p={4} bg="gray.100" borderLeftRadius={10}>
         <HStack justify="space-between">
           <IconButton
             colorScheme="blue"
@@ -80,20 +82,45 @@ const FormDetailView = ({ form, handleFormDetailView, maxWidth = 900, compLoadin
           </HStack>
         </HStack>
         <Box p={4}>
-          <HStack spacing={4}>
-            <Flex grow={1} direction="column">
-              {keysArray.length > 6 && <Text>...</Text>}
-              {keysArray.slice(-8).map((key, index) => (
-                <Text key={cuid()} ml={index * 4} display="block">
-                  {key}
-                </Text>
-              ))}
-            </Flex>
-            <Button onClick={removeKeyFromArray} isDisabled={keysArray.length === 0}>
-              Back
-            </Button>
-          </HStack>
-          <ViewObject object={form.form_response} keysArray={keysArray} addKeyToArray={addKeyToArray} />
+          <Text fontSize="lg">
+            <Text as="span" fontWeight="bold">
+              Recieved at:
+            </Text>
+            {format(parseISO(form.created_at), " dd-MM-yy ")}
+            at
+            {format(parseISO(form.created_at), " hh:mm aa")}
+          </Text>
+          <Text fontSize="lg">
+            <Text as="span" fontWeight="bold">
+              Form Id:{" "}
+            </Text>
+            {form.key}
+          </Text>
+          <Text fontSize="lg">
+            <Text as="span" fontWeight="bold">
+              Sent To:{" "}
+            </Text>
+            {form.email}
+          </Text>
+          <Box mt={4}>
+            <Text fontSize="lg" as="span" fontWeight="bold">
+              Response
+            </Text>
+            <HStack spacing={4}>
+              <Flex grow={1} direction="column">
+                {keysArray.length > 6 && <Text>...</Text>}
+                {keysArray.slice(-8).map((key, index) => (
+                  <Text key={cuid()} ml={index * 4} display="block">
+                    {key}
+                  </Text>
+                ))}
+              </Flex>
+              <Button onClick={removeKeyFromArray} isDisabled={keysArray.length === 0}>
+                Back
+              </Button>
+            </HStack>
+            <ViewObject object={form.form_response} keysArray={keysArray} addKeyToArray={addKeyToArray} />
+          </Box>
         </Box>
       </Box>
     </MotionBox>

@@ -3,7 +3,7 @@ import React from "react";
 import { Button, Text, Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
 import cuid from "cuid";
 
-const THEMES = ["gray", "red", "green", "orange", "purple", "yellow"];
+const THEMES = ["red", "green", "orange", "purple", "yellow"];
 
 const ViewObject = ({ object, addKeyToArray, keysArray = [] }) => {
   const ViewObjectAsTable = () => {

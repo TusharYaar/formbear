@@ -6,6 +6,8 @@ import { useAuth } from "../context/AuthContext";
 import NavMenu from "./NavMenu";
 import Drawer from "./Drawer";
 
+import formbearIcon from "../assests/icon.png";
+
 const Navbar = () => {
   const {
     currentUser: { isSignedIn, isLoading },
@@ -17,12 +19,7 @@ const Navbar = () => {
       <Link as={RouterLink} to="/" color="white" fontSize="lg" _hover={{ underline: "none" }}>
         <Flex align="center" justify="center" direction="row">
           <Box px={4}>
-            <Image
-              src="https://res.cloudinary.com/tusharyaar/image/upload/v1643047914/Formbear/icon_vhk416.png"
-              alt="logo"
-              boxSize={{ base: "30px", md: "50px" }}
-              objectFit="cover"
-            />
+            <Image src={formbearIcon} alt="logo" boxSize={{ base: "30px", md: "50px" }} objectFit="cover" />
           </Box>
           <Text fontSize="2xl" fontWeight="bold" display={{ base: "none", md: "inline" }}>
             Formbear

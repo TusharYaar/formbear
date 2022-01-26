@@ -1,10 +1,22 @@
 import { useEffect, useState } from "react";
 
-import { Box, Text, Flex, HStack, IconButton, VStack, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Flex,
+  HStack,
+  IconButton,
+  VStack,
+  Input,
+  InputGroup,
+  Button,
+  InputLeftElement,
+  Code,
+} from "@chakra-ui/react";
 
 import { AnimatePresence } from "framer-motion";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
 import { RiRefreshLine, RiSearch2Line } from "react-icons/ri";
@@ -49,7 +61,7 @@ const Dashboard = () => {
     }
   }, [isSignedIn, navigate, isLoading]);
 
-  if (isLoading && !isSignedIn) {
+  if (isLoading || !user.submit_id) {
     return (
       <Flex>
         <Text>Loading...</Text>
@@ -85,6 +97,15 @@ const Dashboard = () => {
             onClick={handleFormRefresh}
           />
         </HStack>
+        <HStack align="center" justify="space-between" p={4}>
+          <Text fontSize="md">
+            Submission URL: <Code p={2}>{`https://formbear.tusharyaar.me/submit/${user.submit_id}`}</Code>
+          </Text>
+          <Button as={RouterLink} to="/docs#uasge">
+            View usage
+          </Button>
+        </HStack>
+
         <Flex h="100%" grow={1}>
           {user?.forms?.items && (
             <FormListView
