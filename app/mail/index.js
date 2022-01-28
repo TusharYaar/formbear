@@ -10,10 +10,11 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendNewFormEmail = async (email, body) => {
+const sendNewFormEmail = async (email, cc, body) => {
   const mailOptions = {
     from: process.env.USEREMAIL,
     to: email,
+    cc,
     subject: "New Form Submitted",
     text: "New form submitted",
   };

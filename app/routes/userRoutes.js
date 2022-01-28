@@ -15,9 +15,22 @@ router.use(cors(appCorsOptions));
 router.use(verifyUser);
 
 router.get("/profile", async (req, res) => {
-  const { uid, is_disabled, email_verified, email, mobile_devices } = req.user;
+  const { uid, is_disabled, email_verified, email, mobile_devices, submit_id } = req.user;
   const forms = await getAllForms(email);
-  res.send({ uid, is_disabled, email_verified, email, mobile_devices, forms });
+  res.send({ uid, is_disabled, email_verified, email, mobile_devices, forms, submit_id });
+});
+
+router.delete("/profile", async (req, res) => {
+  console.log(req.user.uid);
+  const forms = await getAllForms(email);
+  if (forms && forms.length > 0) {
+    forms.forEach(async (form) => {
+      await formDb.delete(form.id);
+    });
+  }
+  // await tokenDb.delete(req.user.uid);
+  await userDb.delete(req.user.uid);
+  res.status(200).send({ message: "User deleted successfully" });
 });
 
 router.post("/mobile", async (req, res) => {
@@ -47,22 +60,46 @@ router.post("/mobile", async (req, res) => {
   res.status(200).send({ success: true });
 });
 
+router.get("/tokens", async (req, res) => {
+  const { uid } = req.user;
+  const tokens = await tokenDb.fetch({ uid });
+  res.send(tokens);
+});
+
+router.delete("/tokens/:id", async (req, res) => {
+  const { uid } = req.user;
+  const { id } = req.params;
+  const token = await tokenDb.get(id);
+  if (!token || token.uid !== uid) {
+    return res.status(400).send({ error: "Token not found" });
+  }
+  await tokenDb.delete(id);
+  res.status(200).send({ success: true });
+});
+
 router.post("/create-token", async (req, res) => {
   try {
     const { uid, email } = req.user;
-    const { expiry_duration = "7d", allow_delete = false } = req.body;
+    const { expiry_duration = 7, allow_delete = false } = req.body;
+    console.log(expiry_duration);
+    if ((expiry_duration !== -1 && expiry_duration < 7) || typeof expiry_duration !== "number") {
+      throw new Error("Invalid expiry duration");
+    }
+    console.log(expiry_duration);
     const token = generateToken();
     const application = await tokenDb.put({
       uid,
       email,
       token,
       expiry_duration,
+      created_at: new Date().toISOString(),
       allow_delete,
     });
-    res.send({ application });
+    console.log(application);
+    res.send(application);
   } catch (err) {
     console.log(err);
-    res.send({ error: err.message });
+    res.status(500).send({ error: err.message });
   }
 });
 

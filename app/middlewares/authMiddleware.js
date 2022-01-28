@@ -1,6 +1,8 @@
 const { auth } = require("../firebase");
 const { userDb, tokenDb } = require("../database");
 
+var addDays = require("date-fns/addDays");
+
 const { generateToken } = require("../utils/token");
 
 const verifyUser = async (req, res, next) => {
@@ -51,6 +53,7 @@ const verifyUser = async (req, res, next) => {
           created_at: new Date().toISOString(),
           last_updated_at: new Date().toISOString(),
           last_login_at: new Date().toISOString(),
+          max_api_keys: 3,
         },
         uid
       );
@@ -118,22 +121,21 @@ const verifyUserApiToken = async (req, res, next) => {
         error: "Token is missing",
       });
     }
-    const token = authorization.split(" ")[1];
-    const user = await tokenDb.get(token);
-    if (!user) {
+    const requestToken = authorization.split(" ")[1];
+    const token = await tokenDb.get(requestToken);
+    if (!token) {
       return res.status(401).send({
         error: "Token does not exist or has expired",
       });
     }
 
-    if (new Date() > Date(user.expiry_date)) {
+    if (token.expiry_duration !== -1 && new Date() > addDays(Date.now(), parseInt(token.expiry_duration))) {
       return res.status(401).send({
         error: "Token has expired",
       });
     }
     next();
   } catch (error) {
-    console.log(error);
     return res.status(401).send({
       error: "You must be logged in to access this content",
     });
