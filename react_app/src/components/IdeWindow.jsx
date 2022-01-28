@@ -6,7 +6,7 @@ import { AiFillCloseCircle, AiFillWarning, AiFillSmile, AiFillBell } from "react
 
 import { ImFilesEmpty, ImSearch, ImGit, ImGithub, ImUser, ImHtmlFive } from "react-icons/im";
 
-import { IoLogoJavascript } from "react-icons/io";
+import { SiJavascript } from "react-icons/si";
 import { AnimatePresence, motion } from "framer-motion";
 
 import SyntaxHighlighter from "react-syntax-highlighter";
@@ -86,8 +86,8 @@ const IdeWindow = (props) => {
                         align="center"
                         onClick={() => setExampleOpen(index)}>
                         <Icon
-                          as={example.language === "javascript" ? IoLogoJavascript : ImHtmlFive}
-                          color={example.language === "javascript" ? "yellow" : "orange"}
+                          as={example.language === "javascript" ? SiJavascript : ImHtmlFive}
+                          color={example.language === "javascript" ? "#FFCA28" : "#E44D26"}
                           size={12}
                           mx={2}
                         />
@@ -108,8 +108,9 @@ const IdeWindow = (props) => {
               wrapLongLines
               showLineNumbers
               customStyle={{ maxWidth: props.maxW * 0.65, width: "100%" }}>
-              {!examples[exampleOpen]?.code ? "<h1>Welcome to FormBear</h1>" : examples[exampleOpen].code}
-              {/* {examples[exampleOpen].code} */}
+              {!examples[exampleOpen]?.code
+                ? "<h1>Welcome to FormBear</h1>\n<h3>Loading Examples</h3>"
+                : examples[exampleOpen].code}
             </SyntaxHighlighter>
           </Flex>
         </Flex>

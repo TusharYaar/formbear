@@ -11,6 +11,7 @@ import {
   InputGroup,
   Button,
   InputLeftElement,
+  Checkbox,
   Code,
 } from "@chakra-ui/react";
 
@@ -32,8 +33,11 @@ const Dashboard = () => {
   } = useAuth();
 
   const [openForm, setOpenForm] = useState();
-  // const [filter, setFilter] = useState();
-  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState({
+    search: "",
+    unreadOnly: false,
+    starredOnly: false,
+  });
   const [compLoading, setCompLoading] = useState(true);
 
   const handleFormDetailView = (form) => {
@@ -50,7 +54,21 @@ const Dashboard = () => {
     setCompLoading(false);
   };
 
-  const handleSearchChange = (event) => setSearch(event.target.value);
+  const handleSearchChange = (event) => setFilter((prev) => ({ ...prev, search: event.target.value }));
+
+  const toggleOnlyUnread = () => setFilter((prev) => ({ ...prev, unreadOnly: !prev.unreadOnly }));
+  const toggleOnlyStarred = () => setFilter((prev) => ({ ...prev, starredOnly: !prev.starredOnly }));
+
+  const applyFilters = (form) => {
+    if (filter.unreadOnly) form = form.filter((f) => !f.form_viewed);
+    if (filter.starredOnly) form = form.filter((f) => f.star);
+    if (filter.search)
+      form = form.filter(
+        (f) => f.key.includes(filter.search) || JSON.stringify(f.form_response).includes(filter.search)
+      );
+
+    return form;
+  };
 
   useEffect(() => {
     if (!isSignedIn && !isLoading) {
@@ -71,8 +89,13 @@ const Dashboard = () => {
 
   return (
     <Flex h="100%" grow={1}>
-      <VStack w={[320, 400, 300]} grow={1}>
-        <Text>Jas</Text>
+      <VStack w={200} grow={1} mt={44}>
+        <Checkbox isChecked={filter.unreadOnly} onChange={toggleOnlyUnread}>
+          Only Unread
+        </Checkbox>
+        <Checkbox isChecked={filter.starredOnly} onChange={toggleOnlyStarred}>
+          Only Starred
+        </Checkbox>
       </VStack>
       <Box w="90%">
         <HStack justify="space-between" p={4}>
@@ -81,7 +104,7 @@ const Dashboard = () => {
             <InputGroup>
               <InputLeftElement mx={3} pointerEvents="none" children={<RiSearch2Line color="gray.300" />} />
               <Input
-                value={search}
+                value={filter.search}
                 onChange={handleSearchChange}
                 variant="filled"
                 placeholder="Search"
@@ -109,7 +132,7 @@ const Dashboard = () => {
         <Flex h="100%" grow={1}>
           {user?.forms?.items && (
             <FormListView
-              forms={user.forms.items}
+              forms={applyFilters(user.forms.items)}
               openForm={openForm}
               handleFormDetailView={handleFormDetailView}
               compLoading={compLoading}
