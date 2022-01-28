@@ -57,3 +57,38 @@ export const deleteUserProfile = async (IdToken) => {
   });
   return response.data;
 };
+
+export const getUserAPITokens = async (IdToken) => {
+  const response = await axios.get(`${BASE_URL}/tokens`, {
+    headers: {
+      Authorization: `Bearer ${IdToken}`,
+    },
+  });
+  return response.data;
+};
+
+export const addUserAPIToken = async (IdToken, expiry_duration, allow_delete) => {
+  const response = await axios({
+    method: "post",
+    url: `${BASE_URL}/create-token`,
+    headers: {
+      Authorization: `Bearer ${IdToken}`,
+    },
+    data: {
+      expiry_duration,
+      allow_delete,
+    },
+  });
+  return response.data;
+};
+
+export const deleteUserAPIToken = async (IdToken, apiToken) => {
+  const response = await axios({
+    method: "delete",
+    url: `${BASE_URL}/tokens/${apiToken}`,
+    headers: {
+      Authorization: `Bearer ${IdToken}`,
+    },
+  });
+  return response.data;
+};

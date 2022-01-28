@@ -11,8 +11,6 @@ import iosNoti from "../assests/ios_noti.png";
 import emailNoti from "../assests/email_noti.jpg";
 
 import homeExamples from "../assests/examples.json";
-
-console.log(homeExamples);
 // import googlePlay from "../assests/google_play_badge.png";
 
 const Home = () => {

@@ -16,6 +16,9 @@ import {
   toggleUserFormStar,
   markUserFormViewed,
   deleteUserProfile,
+  addUserAPIToken,
+  getUserAPITokens,
+  deleteUserAPIToken,
 } from "../Utils/apiFunction";
 
 const DEFUALT_USER_STATE = {
@@ -189,6 +192,40 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const getTokens = async () => {
+    try {
+      const IdToken = await auth.currentUser.getIdToken(true);
+      const response = await getUserAPITokens(IdToken);
+
+      return response.items;
+    } catch (error) {
+      console.log(error.message);
+      throw error;
+    }
+  };
+
+  const createToken = async (expiry_duration, allow_delete) => {
+    try {
+      const IdToken = await auth.currentUser.getIdToken(true);
+      const response = await addUserAPIToken(IdToken, parseInt(expiry_duration), allow_delete);
+      return response;
+    } catch (error) {
+      console.log(error.message);
+      throw error;
+    }
+  };
+
+  const deleteToken = async (token_id) => {
+    try {
+      const IdToken = await auth.currentUser.getIdToken(true);
+      const response = await deleteUserAPIToken(IdToken, token_id);
+      return response;
+    } catch (error) {
+      console.log(error.message);
+      throw error;
+    }
+  };
+
   const value = {
     currentUser,
     logOut,
@@ -200,6 +237,9 @@ export function AuthProvider({ children }) {
     markFormViewed,
     deleteForm,
     deleteProfile,
+    getTokens,
+    createToken,
+    deleteToken,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
