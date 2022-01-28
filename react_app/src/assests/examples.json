@@ -1,0 +1,12 @@
+[
+    {
+        "filename": "html_form.html",
+        "language": "html",
+        "code": "<form action=\"\" method='POST'><input type='text' name='name' required /> <input type='email' name='email' required />       <button type='submit'>Send</button>    </form>"
+    },
+    {
+        "filename": "js_submit.html",
+        "language": "javascript",
+        "code": "function () => {console.log('Hello world')}"
+    }
+]

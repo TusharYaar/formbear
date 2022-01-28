@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import { Flex, Box, Text, HStack, Center, VStack, Link, IconButton, Tooltip } from "@chakra-ui/react";
+import { Flex, Box, Text, HStack, Center, VStack, Link, IconButton, Tooltip, Icon } from "@chakra-ui/react";
 
 import { AiFillCloseCircle, AiFillWarning, AiFillSmile, AiFillBell } from "react-icons/ai";
 
-import { ImFilesEmpty, ImSearch, ImGit, ImGithub, ImUser } from "react-icons/im";
+import { ImFilesEmpty, ImSearch, ImGit, ImGithub, ImUser, ImHtmlFive } from "react-icons/im";
 
+import { IoLogoJavascript } from "react-icons/io";
 import { AnimatePresence, motion } from "framer-motion";
 
 import SyntaxHighlighter from "react-syntax-highlighter";
@@ -14,7 +15,14 @@ import { vs2015 } from "react-syntax-highlighter/dist/esm/styles/hljs";
 const MotionBox = motion(Flex);
 
 const IdeWindow = (props) => {
+  const { examples = [] } = props;
   const [isOpen, setIsOpen] = useState(true);
+
+  const [exampleOpen, setExampleOpen] = useState(null);
+
+  useEffect(() => {
+    setExampleOpen(0);
+  }, [examples]);
 
   const toggleFilesSection = () => {
     setIsOpen((prev) => !prev);
@@ -62,22 +70,46 @@ const IdeWindow = (props) => {
           </Flex>
           <AnimatePresence>
             {isOpen && (
-              <MotionBox initial={{ width: 0 }} animate={{ width: "35%" }} exit={{ width: 0 }} bg="#272727"></MotionBox>
+              <MotionBox initial={{ width: 0 }} animate={{ width: "35%" }} exit={{ width: 0 }} bg="#272727">
+                <Flex direction="column" w="100%" h="100%" pt={4}>
+                  {examples.map((example, index) => (
+                    <Flex key={index} direction="column">
+                      <Flex
+                        py={1}
+                        _hover={{ bg: "#464d5b" }}
+                        _active={{ bg: "#464d5b" }}
+                        bg={exampleOpen === index ? "#464d5b" : "#272727"}
+                        direction="row"
+                        w="100%"
+                        justify="flex-start"
+                        pl={4}
+                        align="center"
+                        onClick={() => setExampleOpen(index)}>
+                        <Icon
+                          as={example.language === "javascript" ? IoLogoJavascript : ImHtmlFive}
+                          color={example.language === "javascript" ? "yellow" : "orange"}
+                          size={12}
+                          mx={2}
+                        />
+                        <Text fontSize="sm" color="#BCC1C1">
+                          {example.filename}
+                        </Text>
+                      </Flex>
+                    </Flex>
+                  ))}
+                </Flex>
+              </MotionBox>
             )}
           </AnimatePresence>
           <Flex w="100%" bg="#1E1E1E">
             <SyntaxHighlighter
-              language="html"
+              language={examples[exampleOpen]?.language || "html"}
               style={vs2015}
               wrapLongLines
               showLineNumbers
               customStyle={{ maxWidth: props.maxW * 0.65, width: "100%" }}>
-              {`<form action="" method="POST">    
-    <input type="text" name="name" required />   
-    <input type="email" name="email" required />
-    <button type="submit">Send</button>
-</form>`}
-              {/* function () =&gt; (hello = "world") */}
+              {!examples[exampleOpen]?.code ? "<h1>Welcome to FormBear</h1>" : examples[exampleOpen].code}
+              {/* {examples[exampleOpen].code} */}
             </SyntaxHighlighter>
           </Flex>
         </Flex>

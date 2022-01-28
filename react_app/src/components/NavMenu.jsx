@@ -1,15 +1,4 @@
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  Button,
-  MenuItem,
-  // MenuItemOption,
-  // MenuGroup,
-  // MenuOptionGroup,
-  MenuDivider,
-  Avatar,
-} from "@chakra-ui/react";
+import { Menu, MenuButton, MenuList, Button, MenuItem, MenuDivider, Avatar } from "@chakra-ui/react";
 
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 

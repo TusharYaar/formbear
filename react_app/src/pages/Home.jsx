@@ -10,6 +10,9 @@ import androidNoti from "../assests/android_noti.png";
 import iosNoti from "../assests/ios_noti.png";
 import emailNoti from "../assests/email_noti.jpg";
 
+import homeExamples from "../assests/examples.json";
+
+console.log(homeExamples);
 // import googlePlay from "../assests/google_play_badge.png";
 
 const Home = () => {
@@ -34,7 +37,7 @@ const Home = () => {
               </Text>
             </Center>
             <Center my={8}>
-              <IdeWindow maxW={900} w="100%" />
+              <IdeWindow maxW={900} w="100%" examples={homeExamples} />
             </Center>
           </Box>
         </Box>
