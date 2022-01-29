@@ -17,13 +17,10 @@ if (!process.env.DETA_RUNTIME) {
 
 app.use("/api", require("./routes/userRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
+
 app.use("/forms", require("./routes/openRoutes"));
 
 app.use("/", require("./routes/submitRoute"));
-
-app.get("/image", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "static", "media", "icon.04833a1a28b5bcb37295.png"));
-});
 
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));

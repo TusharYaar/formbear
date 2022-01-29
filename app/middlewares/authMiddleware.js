@@ -2,6 +2,7 @@ const { auth } = require("../firebase");
 const { userDb, tokenDb } = require("../database");
 
 var addDays = require("date-fns/addDays");
+var parseISO = require("date-fns/parseISO");
 
 const { generateToken } = require("../utils/token");
 
@@ -122,22 +123,27 @@ const verifyUserApiToken = async (req, res, next) => {
       });
     }
     const requestToken = authorization.split(" ")[1];
-    const token = await tokenDb.get(requestToken);
-    if (!token) {
+    const token = await tokenDb.fetch({ token: requestToken });
+
+    if (token.count !== 1) {
       return res.status(401).send({
         error: "Token does not exist or has expired",
       });
     }
+    const { expiry_duration, created_at, email, uid } = token.items[0];
 
-    if (token.expiry_duration !== -1 && new Date() > addDays(Date.now(), parseInt(token.expiry_duration))) {
+    if (expiry_duration !== -1 && new Date() > addDays(parseISO(created_at), parseInt(expiry_duration))) {
       return res.status(401).send({
         error: "Token has expired",
       });
     }
+    req.user = { email, uid };
+    req.token = token.items[0];
     next();
   } catch (error) {
-    return res.status(401).send({
-      error: "You must be logged in to access this content",
+    console.log(error);
+    return res.status(500).send({
+      error: "Internal server error",
     });
   }
 };
