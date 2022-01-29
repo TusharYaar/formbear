@@ -60,6 +60,25 @@ router.post("/mobile", async (req, res) => {
   res.status(200).send({ success: true });
 });
 
+router.delete("/mobile/:id", async (req, res) => {
+  const { uid, mobile_devices } = req.user;
+  const { id } = req.params;
+  const device_exist = mobile_devices.findIndex((device) => device.device_id === id);
+  if (device_exist === -1) {
+    return res.status(400).send({ error: "Device not found" });
+  } else {
+    const updated_devices = mobile_devices.filter((device) => device.device_id !== id);
+    await userDb.update(
+      {
+        last_updated_at: new Date().toISOString(),
+        mobile_devices: updated_devices,
+      },
+      uid
+    );
+    return res.status(200).send({ success: true });
+  }
+});
+
 router.get("/tokens", async (req, res) => {
   const { uid } = req.user;
   const tokens = await tokenDb.fetch({ uid });
