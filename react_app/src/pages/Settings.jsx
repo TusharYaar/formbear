@@ -10,10 +10,12 @@ import {
   Input,
   Button,
   useDisclosure,
+  HStack,
 } from "@chakra-ui/react";
 
 import APIKeyItem from "../components/APIKeyItem";
 import APIKeyModal from "../components/APIKeyModal";
+import ViewDeviceItem from "../components/ViewDeviceItem";
 
 import { useNavigate } from "react-router-dom";
 
@@ -34,6 +36,7 @@ const Settings = () => {
     deleteProfile,
     getTokens,
     createToken,
+    deleteDevice,
     deleteToken,
   } = useAuth();
 
@@ -94,6 +97,15 @@ const Settings = () => {
       setTokenLoading(false);
     }
   };
+  const handleDeleteDevice = async (device) => {
+    try {
+      setTokenLoading(true);
+      await deleteDevice(device);
+    } catch (error) {
+    } finally {
+      setTokenLoading(false);
+    }
+  };
 
   if (isLoading && !isSignedIn) {
     return (
@@ -118,7 +130,7 @@ const Settings = () => {
         <Box>
           <Alert status="info" borderRadius={10} my={2}>
             <AlertIcon />
-            Generate API key now available.
+            Generate API key now available. Limited to 3/user
           </Alert>
           <Text>
             Formbear allows you to connect your own services with the formbear api. The api allows you to access all
@@ -143,6 +155,27 @@ const Settings = () => {
             Generate New API Key
           </Button>
         </Box>
+      </Box>
+      <Box p={4}>
+        <Text fontSize="2xl" my={2} fontWeight="bold">
+          Devices
+        </Text>
+        <Alert status="info" borderRadius={10}>
+          <AlertIcon />
+          <AlertTitle mr={2}>Info</AlertTitle>
+          <AlertDescription>These are the devices which will be notified when a form is submitted.</AlertDescription>
+        </Alert>
+        <HStack spacing={4} my={2} wrap="wrap">
+          {user.mobile_devices &&
+            user.mobile_devices.map((device) => (
+              <ViewDeviceItem
+                key={device.device_id}
+                device={device}
+                onClickDelete={handleDeleteDevice}
+                isDisabled={tokenLoading}
+              />
+            ))}
+        </HStack>
       </Box>
       <Box p={4}>
         <Text fontSize="2xl" my={2} fontWeight="bold">

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BASE_URL = "http://localhost:5000/api";
-
+//
 // const BASE_URL = "https://formbear.tusharyaar.me/api";
 
 export const getUserProfile = async (IdToken) => {
@@ -86,6 +86,17 @@ export const deleteUserAPIToken = async (IdToken, apiToken) => {
   const response = await axios({
     method: "delete",
     url: `${BASE_URL}/tokens/${apiToken}`,
+    headers: {
+      Authorization: `Bearer ${IdToken}`,
+    },
+  });
+  return response.data;
+};
+
+export const deleteMobileDevice = async (IdToken, deviceId) => {
+  const response = await axios({
+    method: "delete",
+    url: `${BASE_URL}/mobile/${deviceId}`,
     headers: {
       Authorization: `Bearer ${IdToken}`,
     },

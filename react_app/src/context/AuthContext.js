@@ -19,6 +19,7 @@ import {
   addUserAPIToken,
   getUserAPITokens,
   deleteUserAPIToken,
+  deleteMobileDevice,
 } from "../Utils/apiFunction";
 
 const DEFUALT_USER_STATE = {
@@ -226,6 +227,26 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const deleteDevice = async (device_id) => {
+    try {
+      const IdToken = await auth.currentUser.getIdToken(true);
+      const response = await deleteMobileDevice(IdToken, device_id);
+
+      setUser({
+        ...currentUser,
+        user: {
+          ...currentUser.user,
+          mobile_devices: currentUser.user.mobile_devices.filter((device) => device.device_id !== device_id),
+        },
+      });
+
+      return response;
+    } catch (error) {
+      console.log(error.message);
+      throw error;
+    }
+  };
+
   const value = {
     currentUser,
     logOut,
@@ -240,6 +261,7 @@ export function AuthProvider({ children }) {
     getTokens,
     createToken,
     deleteToken,
+    deleteDevice,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

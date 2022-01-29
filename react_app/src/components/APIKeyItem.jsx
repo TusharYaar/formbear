@@ -40,7 +40,9 @@ const APIKeyItem = ({ token, onDelete }) => {
           deleting forms
         </Text>
       </Box>
-      <Button onClick={handleDelete}>Delete Token</Button>
+      <Button onClick={handleDelete} colorScheme="red">
+        Delete Token
+      </Button>
     </Flex>
   );
 };
