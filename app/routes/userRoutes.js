@@ -81,11 +81,9 @@ router.post("/create-token", async (req, res) => {
   try {
     const { uid, email } = req.user;
     const { expiry_duration = 7, allow_delete = false } = req.body;
-    console.log(expiry_duration);
     if ((expiry_duration !== -1 && expiry_duration < 7) || typeof expiry_duration !== "number") {
       throw new Error("Invalid expiry duration");
     }
-    console.log(expiry_duration);
     const token = generateToken();
     const application = await tokenDb.put({
       uid,
@@ -95,8 +93,7 @@ router.post("/create-token", async (req, res) => {
       created_at: new Date().toISOString(),
       allow_delete,
     });
-    console.log(application);
-    res.send(application);
+    res.status(201).send(application);
   } catch (err) {
     console.log(err);
     res.status(500).send({ error: err.message });
