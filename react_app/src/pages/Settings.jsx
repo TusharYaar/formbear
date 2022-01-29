@@ -130,6 +130,9 @@ const Settings = () => {
           {!apiTokens.isLoading &&
             apiTokens.tokens.length > 0 &&
             apiTokens.tokens.map((token) => <APIKeyItem key={token.key} token={token} onDelete={hadleDelete} />)}
+          {apiTokens.tokens.length >= 3 && (
+            <Text>Number of API keys is limited to 3, contact us if you need more.</Text>
+          )}
           <Button
             onClick={onOpen}
             my={3}
