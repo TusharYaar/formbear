@@ -1,6 +1,6 @@
 import { Box, Image, Text, Button } from "@chakra-ui/react";
 
-import deviceImages from "../assests/devices.json";
+import DEVICES from "../assests/devices.js";
 
 const ViewDeviceItem = ({ device, onClickDelete, isDisabled }) => {
   const handleDelete = () => {
@@ -10,7 +10,7 @@ const ViewDeviceItem = ({ device, onClickDelete, isDisabled }) => {
   return (
     <Box w={300} borderRadius="md" borderWidth="1px" m={2}>
       <Image
-        src={deviceImages[device.manufacturer.toLowerCase()] || deviceImages["android"]}
+        src={DEVICES[device.manufacturer.toLowerCase()] || DEVICES["android"]}
         alt="device Image"
         w="300px"
         h="200px"

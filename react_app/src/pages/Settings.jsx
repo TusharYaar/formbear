@@ -163,7 +163,10 @@ const Settings = () => {
         <Alert status="info" borderRadius={10}>
           <AlertIcon />
           <AlertTitle mr={2}>Info</AlertTitle>
-          <AlertDescription>These are the devices which will be notified when a form is submitted.</AlertDescription>
+          <AlertDescription>
+            These are the devices which will be notified when a form is submitted. On deleting they will <b>NOT</b> be
+            logged out of the account.
+          </AlertDescription>
         </Alert>
         <HStack spacing={4} my={2} wrap="wrap">
           {user.mobile_devices &&

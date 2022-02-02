@@ -6,9 +6,9 @@ import IdeWindow from "../components/IdeWindow";
 
 import backgroundImg from "../assests/background.jpg";
 
-import androidNoti from "../assests/android_noti.png";
-import iosNoti from "../assests/ios_noti.png";
-import emailNoti from "../assests/email_noti.jpg";
+import androidNoti from "../assests/noti/android_noti.png";
+import iosNoti from "../assests/noti/ios_noti.png";
+import emailNoti from "../assests/noti/email_noti.jpg";
 
 import homeExamples from "../assests/examples.json";
 // import googlePlay from "../assests/google_play_badge.png";
