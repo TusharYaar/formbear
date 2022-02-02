@@ -2,11 +2,10 @@
     {
         "filename": "html_form.html",
         "language": "html",
-        "code": "<form action=\"\" method='POST'><input type='text' name='name' required /> <input type='email' name='email' required />       <button type='submit'>Send</button>    </form>"
+        "code": "<form action=\"YOUR-SUBMISSION-URL\" method='POST'>\n\t<input type='text' name='name' required />\n\t<input type='email' name='email' required />\n\t<button type='submit'>Send</button>\n</form>"
     },
     {
-        "filename": "js_submit.html",
+        "filename": "js_submit.js",
         "language": "javascript",
-        "code": "function () => {console.log('Hello world')}"
-    }
+        "code": "// Example POST method implementation:\nasync function submitForm(url = '', data = {}) {\n    const response = await fetch(url, {\n    method: 'POST',\n    headers: {\n      'Content-Type': 'application/json'\n    },\n    body: JSON.stringify(data)\n    // body data type must match \"Content-Type\" header\n    });\n    // parses JSON response into native JavaScript objects\n    return response.json();\n }\n\n submitForm('YOUR-SUBMISSION-URL', { foo:\"bar\" })\n   .then(data => {\n    console.log(\"Form Submitted\");\n   });"   }
 ]
