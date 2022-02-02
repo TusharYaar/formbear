@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Docs from "./pages/Docs";
 import Settings from "./pages/Settings";
+import Privacy from "./pages/Privacy";
 
 const ROUTES = ["/login", "/"];
 
@@ -29,6 +30,7 @@ function App() {
         <Route path="/login" element={<Authentication />} />
         <Route path="/dashboard" element={<Dashboard />} exact />
         <Route path="/docs" element={<Docs />} />
+        <Route path="/privacy" element={<Privacy />} />
       </Routes>
     </Flex>
   );
