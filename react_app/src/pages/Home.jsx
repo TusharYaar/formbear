@@ -11,7 +11,7 @@ import iosNoti from "../assests/noti/ios_noti.png";
 import emailNoti from "../assests/noti/email_noti.jpg";
 
 import homeExamples from "../assests/examples.json";
-// import googlePlay from "../assests/google_play_badge.png";
+import googlePlay from "../assests/google_play_badge.png";
 
 const Home = () => {
   return (
@@ -64,12 +64,13 @@ const Home = () => {
               Android
             </Text>
             <Image src={androidNoti} width="100%" objectFit="cover" loading="lazy" my={4} borderRadius={4} />
-            <Link display="inline" href="https://chakra-ui.com" isExternal w="50%">
-              {/* <Image src={googlePlay} objectFit="cover" loading="lazy" /> */}
+            <Link
+              display="inline"
+              href="https://play.google.com/store/apps/details?id=com.tusharyaar.formbear"
+              isExternal
+              w="50%">
+              <Image src={googlePlay} objectFit="cover" loading="lazy" />
             </Link>
-            <Text fontSize="sm" my={4}>
-              Coming Soon
-            </Text>
           </Flex>
           <Flex
             boxShadow="xl"
